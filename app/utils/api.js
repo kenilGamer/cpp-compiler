@@ -1,15 +1,15 @@
 import axios from "axios";
 
-// Note: NEXT_PUBLIC_ variables are exposed to the browser. Only use for public keys/hosts.
 const API_KEY = process.env.NEXT_PUBLIC_JUDGE0_API_KEY;
 const API_HOST = process.env.NEXT_PUBLIC_JUDGE0_API_HOST;
 
+
 const api = axios.create({
-  baseURL: API_HOST ? `https://${API_HOST}` : "https://judge0-ce.p.rapidapi.com",
+  baseURL: "https://judge0-ce.p.rapidapi.com",
   headers: {
     "content-type": "application/json",
     "X-RapidAPI-Key": API_KEY,
-    "X-RapidAPI-Host": API_HOST || "judge0-ce.p.rapidapi.com",
+    "X-RapidAPI-Host": API_HOST,
   },
 });
 
