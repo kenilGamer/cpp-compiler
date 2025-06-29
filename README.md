@@ -8,7 +8,7 @@
 
 ## 🖼️ Demo
 
-![App Screenshot](image.png)
+![App Screenshot](public/image.png)
 
 ## Table of Contents
 - [Features](#features)
