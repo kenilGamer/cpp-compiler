@@ -1,6 +1,22 @@
 # C++ Online Compiler
 
-A modern web application to write, compile, and run C++, Python, Java, JavaScript, and C code instantly in your browser. Powered by Next.js, React, Monaco Editor, and Judge0 API.
+![GitHub repo stars](https://img.shields.io/github/stars/kenilGamer/cpp-compiler?style=social)
+![GitHub forks](https://img.shields.io/github/forks/kenilGamer/cpp-compiler?style=social)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+> A modern web app to write, compile, and run C++, Python, Java, JavaScript, and C code in your browser.
+
+## 🖼️ Demo
+
+![App Screenshot](public\image.png)
+
+## Table of Contents
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Customization](#customization)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
