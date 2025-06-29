@@ -11,7 +11,7 @@ import FeaturesList from "./components/FeaturesList";
 import QuickActions from "./components/QuickActions";
 import Footer from "./components/Footer";
 import { languages, examples } from "./utils/constants";
-import { submitCode, getSubmissionResult, decodeBase64 } from "./utils/api";
+import { submitCode, getSubmissionResult, decodeBase64, estimateMemoryUsage } from "./utils/api";
 
 export default function Home() {
   const [code, setCode] = useState(`#include <iostream>
@@ -42,50 +42,51 @@ int main() {
     const startTime = Date.now();
     
     try {
-      const submit = await submitCode(language, code, input);
-      const token = submit.token;
-      console.log("Submission token:", token);
-
-      // Poll for results with better error handling
-      const pollResult = async () => {
-        try {
-          const result = await getSubmissionResult(token);
-          console.log("API Response:", result);
-          
-          if (result.status && result.status.id <= 2) {
-            // Still processing, poll again
-            setTimeout(pollResult, 1000);
-          } else {
-            // Processing complete - decode base64 output
-            const stdout = decodeBase64(result.stdout);
-            const stderr = decodeBase64(result.stderr);
-            const compileOutput = decodeBase64(result.compile_output);
-            
-            const endTime = Date.now();
-            setExecutionTime(endTime - startTime);
-            setMemoryUsed(result.memory || null);
-            
-            let finalOutput = "";
-            if (stderr) finalOutput += `❌ Error: ${stderr}\n`;
-            if (compileOutput) finalOutput += `🔧 Compilation: ${compileOutput}\n`;
-            if (stdout) finalOutput += `📤 Output:\n${stdout}`;
-            if (!finalOutput) finalOutput = "✅ Code executed successfully with no output.";
-            
-            setOutput(finalOutput);
-            setIsRunning(false);
-          }
-        } catch (err) {
-          console.error("Polling error:", err.response?.data || err.message);
-          setOutput(`❌ Error polling result: ${err.response?.data?.error || err.message}`);
-          setIsRunning(false);
+      const result = await submitCode(language, code, input);
+      console.log("Piston API Response:", result);
+      console.log("Full result object:", JSON.stringify(result, null, 2));
+      
+      const endTime = Date.now();
+      setExecutionTime(endTime - startTime);
+      
+      // Piston returns results immediately
+      let finalOutput = "";
+      
+      if (result.run) {
+        const run = result.run;
+        
+        if (run.stderr) {
+          finalOutput += `❌ Error: ${run.stderr}\n`;
         }
-      };
-
-      // Start polling after a short delay
-      setTimeout(pollResult, 1000);
+        
+        if (run.stdout) {
+          finalOutput += `📤 Output:\n${run.stdout}`;
+        }
+        
+        if (run.code !== 0) {
+          finalOutput += `\n⚠️ Exit code: ${run.code}`;
+        }
+        
+        if (!finalOutput) {
+          finalOutput = "✅ Code executed successfully with no output.";
+        }
+        const estimatedMemory = estimateMemoryUsage(code, language);
+        setMemoryUsed(estimatedMemory);
+      } else if (result.compile) {
+        // Compilation error
+        finalOutput = `❌ Compilation Error:\n${result.compile.stderr || result.compile.output || 'Unknown compilation error'}`;
+        setMemoryUsed(null);
+      } else {
+        finalOutput = "❌ Unexpected response format from API";
+        setMemoryUsed(null);
+      }
+      
+      setOutput(finalOutput);
+      setIsRunning(false);
+      
     } catch (err) {
       console.error("Submission error:", err.response?.data || err.message);
-      setOutput(`❌ Error submitting code: ${err.response?.data?.error || err.message}`);
+      setOutput(`❌ Error submitting code: ${err.response?.data?.message || err.message}`);
       setIsRunning(false);
     }
   };
@@ -106,7 +107,7 @@ int main() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Header />
       
       <main className="container mx-auto px-4 py-8 max-w-7xl">
@@ -115,21 +116,21 @@ int main() {
           <h1 className="text-5xl md:text-6xl font-bold mb-6 gradient-text">
             C++ Online Compiler
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl  max-w-3xl mx-auto leading-relaxed">
             Write, compile, and run C++ code instantly in your browser. 
             Perfect for learning, testing, and quick prototyping.
           </p>
-          <div className="flex justify-center items-center gap-4 mt-6 text-sm text-gray-400">
+          <div className="flex justify-center items-center gap-4 mt-6 text-sm text-muted">
             <span className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-success-color rounded-full animate-pulse"></div>
               Real-time compilation
             </span>
             <span className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-accent-color rounded-full animate-pulse"></div>
               Multiple languages
             </span>
             <span className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-warning-color rounded-full animate-pulse"></div>
               Instant execution
             </span>
           </div>

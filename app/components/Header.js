@@ -76,7 +76,7 @@ export default function Header() {
 
             {/* GitHub Button */}
             <a
-              href="https://github.com/kenilsanagi"
+              href="https://github.com/kenilgamer"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 rounded-lg transition-colors focus-ring"

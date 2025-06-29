@@ -27,7 +27,7 @@ export default function LanguageSelector({ language, setLanguage, languages }) {
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-xl hover:bg-gray-700 transition-colors focus-ring"
+          className="w-full flex     items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-xl hover:bg-gray-700 transition-colors focus-ring"
         >
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-8 h-8 bg-gray-700 rounded-lg">
