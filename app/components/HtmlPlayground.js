@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef } from 'react';
 import MonacoEditor from '@monaco-editor/react';
+import { DocumentDuplicateIcon, TrashIcon, PlayIcon } from "@heroicons/react/24/outline";
 
 const defaultHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -205,10 +206,31 @@ export default function HtmlPlayground() {
   const iframeRef = useRef();
   const debounceRef = useRef();
 
+  // --- Begin: Add copy, clear, and run actions for each tab ---
+  const copyToClipboard = async () => {
+    let code = '';
+    if (activeTab === 'HTML') code = html;
+    else if (activeTab === 'CSS') code = css;
+    else if (activeTab === 'JS') code = js;
+    try {
+      await navigator.clipboard.writeText(code);
+      // Optionally, show a toast/notification here
+    } catch (err) {
+      console.error('Failed to copy code:', err);
+    }
+  };
+
+  const clearCode = () => {
+    if (activeTab === 'HTML') setHtml('');
+    else if (activeTab === 'CSS') setCss('');
+    else if (activeTab === 'JS') setJs('');
+  };
+
   const runCode = () => {
     const code = `<!DOCTYPE html>\n<html>\n<head>\n<style>${css}</style>\n</head>\n<body>\n${html}\n<script>${js}<\/script>\n</body>\n</html>`;
     setSrcDoc(code);
   };
+  // --- End: Add copy, clear, and run actions for each tab ---
 
   // Auto-run on change with debounce
   React.useEffect(() => {
@@ -232,7 +254,6 @@ export default function HtmlPlayground() {
                 flex: 1,
                 padding: '0.5rem',
                 background: activeTab === tab ? '#18181b' : '#23232b',
-
                 border: 'none',
                 borderBottom: activeTab === tab ? '2px solid #4f46e5' : '2px solid transparent',
                 fontWeight: 'bold',
@@ -243,6 +264,73 @@ export default function HtmlPlayground() {
             </button>
           ))}
         </div>
+        {/* --- Begin: Editor header with action buttons --- */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: '#23232b',
+          borderBottom: '1px solid #222',
+          padding: '0.5rem 1rem'
+        }}>
+          <div style={{ fontSize: 14, color: '#bbb', fontWeight: 500 }}>
+            {activeTab} Editor
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={copyToClipboard}
+              title="Copy code"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#bbb',
+                padding: 6,
+                borderRadius: 6,
+                cursor: 'pointer',
+                transition: 'background 0.15s'
+              }}
+              onMouseOver={e => e.currentTarget.style.background = '#222'}
+              onMouseOut={e => e.currentTarget.style.background = 'none'}
+            >
+              <DocumentDuplicateIcon className="w-5 h-5" />
+            </button>
+            <button
+              onClick={runCode}
+              title="Run code"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#4f46e5',
+                padding: 6,
+                borderRadius: 6,
+                cursor: 'pointer',
+                transition: 'background 0.15s'
+              }}
+              onMouseOver={e => e.currentTarget.style.background = '#222'}
+              onMouseOut={e => e.currentTarget.style.background = 'none'}
+            >
+              <PlayIcon className="w-5 h-5" />
+            </button>
+            <button
+              onClick={clearCode}
+              title="Clear code"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#fd7330',
+                padding: 6,
+                borderRadius: 6,
+                cursor: 'pointer',
+                transition: 'background 0.15s'
+              }}
+              onMouseOver={e => e.currentTarget.style.background = '#222'}
+              onMouseOut={e => e.currentTarget.style.background = 'none'}
+            >
+              <TrashIcon className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+        {/* --- End: Editor header with action buttons --- */}
         <div style={{ flex: 1, minHeight: 0 }}>
           {activeTab === 'HTML' && (
             <MonacoEditor
@@ -272,12 +360,6 @@ export default function HtmlPlayground() {
             />
           )}
         </div>
-        <button
-          onClick={runCode}
-          style={{ margin: '1rem', padding: '0.5rem 1rem', background: '#4f46e5', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}
-        >
-          Run ▶
-        </button>
       </div>
       <div style={{ width: '50%', background: '#fff', height: '100%' }}>
         <iframe
