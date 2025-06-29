@@ -15,22 +15,15 @@ import { submitCode, getSubmissionResult, decodeBase64 } from "./utils/api";
 
 export default function Home() {
   const [code, setCode] = useState(`#include <iostream>
+#include <string>
 #include <vector>
-#include <algorithm>
+
 
 using namespace std;
 
 int main() {
-    cout << "🚀 Welcome to C++ Online Compiler!" << endl;
-    cout << "✨ Write, compile, and run your code instantly!" << endl;
-    
-    vector<int> numbers = {1, 2, 3, 4, 5};
-    cout << "\\n📊 Sample vector: ";
-    for (int num : numbers) {
-        cout << num << " ";
-    }
-    cout << "\\n\\n🎯 Sum: " << accumulate(numbers.begin(), numbers.end(), 0) << endl;
-    
+    // Your code here
+    cout << "Hello, World!" << endl;
     return 0;
 }`);
   const [output, setOutput] = useState("");

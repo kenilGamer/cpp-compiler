@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API_KEY = "08b228f021msh4ca5d79035bb5f0p194783jsn70421cdd278c";
-const API_HOST = "judge0-ce.p.rapidapi.com";
+const API_KEY = process.env.NEXT_PUBLIC_JUDGE0_API_KEY;
+const API_HOST = process.env.NEXT_PUBLIC_JUDGE0_API_HOST;
+console.log(API_KEY, API_HOST);
 
 const api = axios.create({
   baseURL: "https://judge0-ce.p.rapidapi.com",
