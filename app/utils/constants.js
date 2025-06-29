@@ -33,4 +33,16 @@ public class Main {
     }
 }`,
   javascript: `// Modern JavaScript Example\nfunction greet(name) {\n  console.log('Hello, ' + name + '!');\n}\ngreet('World');`,
+  csharp: `using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Hello from C#!");
+        Console.Write("Enter your name: ");
+        string name = Console.ReadLine();
+        Console.WriteLine($"Hello, {name}!");
+    }
+}`,
 }; 

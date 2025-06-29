@@ -12,9 +12,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "C++ Online Compiler | Modern Web IDE",
-  description: "A modern web app to write, compile, and run C++, Python, Java, JavaScript, and C code instantly in your browser. Powered by Next.js, Monaco Editor, and Judge0 API.",
-  keywords: "C++, online compiler, web IDE, code editor, Python, Java, JavaScript, C, Next.js, Monaco Editor, Judge0, run code online, programming, coding, developer tools, open source, code runner, code execution, learn programming, code playground"
+  title: " Online Compiler & Modern Web IDE",
+  description: "Write, compile, and run C++, Python, Java, JavaScript, and C code instantly in your browser. A fast, modern, open-source web IDE powered by Next.js and Judge0.",
+  keywords: [
+    "online compiler", "web IDE", "code editor", "C++", "Python", "Java", "JavaScript", "C",
+    "Next.js", "Judge0", "run code online", "programming", "coding", "developer tools",
+    "open source", "code runner", "code execution", "learn programming", "code playground"
+  ].join(", ")
 };
 
 export default function RootLayout({ children }) {
