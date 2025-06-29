@@ -14,6 +14,9 @@ export default function DocsClient({ docs }) {
     );
   }, [search, docs]);
 
+  // Use a consistent date format to avoid hydration issues
+  const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       {/* Sidebar Navigation */}
@@ -66,7 +69,7 @@ export default function DocsClient({ docs }) {
           </section>
         ))}
         <div className="text-center text-xs text-gray-500 mt-16">
-          Last updated: {new Date().toLocaleDateString()} &middot; Powered by Next.js &amp; React Markdown
+          Last updated: {currentDate} &middot; Powered by Next.js &amp; React Markdown
         </div>
       </main>
     </div>

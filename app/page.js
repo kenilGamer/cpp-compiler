@@ -114,11 +114,11 @@ int main() {
         {/* Hero Section */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 gradient-text">
-            C++ Online Compiler
+            Online Compiler
           </h1>
           <p className="text-xl  max-w-3xl mx-auto leading-relaxed">
-            Write, compile, and run C++ code instantly in your browser. 
-            Perfect for learning, testing, and quick prototyping.
+            Write, compile, and run code in multiple languages instantly in your browser. 
+            Perfect for learning, testing, and quick prototyping across C++, Python, Java, JavaScript, C, and C#.
           </p>
           <div className="flex justify-center items-center gap-4 mt-6 text-sm text-muted">
             <span className="flex items-center gap-2">

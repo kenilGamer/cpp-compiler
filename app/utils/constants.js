@@ -31,5 +31,6 @@ public class Main {
         int n = scanner.nextInt();
         System.out.println("You entered: " + n);
     }
-}`
+}`,
+  javascript: `// Modern JavaScript Example\nfunction greet(name) {\n  console.log('Hello, ' + name + '!');\n}\ngreet('World');`,
 }; 
