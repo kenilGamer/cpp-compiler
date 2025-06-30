@@ -47,7 +47,7 @@ export default function Footer() {
             <h4 className="text-lg font-semibold text-white mb-4">Support</h4>
             <ul className="space-y-2">
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Report Bug</a></li>
+              <li><a href="https://github.com/kenilgamer/cpp-compiler/issues/new" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">Report Bug</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Feature Request</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
             </ul>
@@ -57,7 +57,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 C++ Online Compiler. Built with ❤️ for developers.
+            © {new Date().getFullYear()} Online Compiler. Built with ❤️ by Kenil for developers. 
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>

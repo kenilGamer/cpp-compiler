@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SunIcon, MoonIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
+import { SunIcon, MoonIcon, CodeBracketIcon, BugAntIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
   const [dark, setDark] = useState(true);
@@ -107,6 +107,17 @@ export default function Header() {
                 <MoonIcon className="h-5 w-5 text-accent" />
               )}
             </button>
+
+            {/* Report Bug Button */}
+            <a
+              href="https://github.com/kenilgamer/cpp-compiler/issues/new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-2 px-4 py-2 btn-secondary rounded-lg focus-ring"
+            >
+              <BugAntIcon className="w-5 h-5" />
+              <span className="text-sm font-medium">Report Bug</span>
+            </a>
 
             {/* GitHub Button */}
             <a
