@@ -1,7 +1,7 @@
 // src/app/page.js
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
 import LanguageSelector from "./components/LanguageSelector";
 import ExampleButtons from "./components/ExampleButtons";
@@ -32,6 +32,35 @@ int main() {
   const [isRunning, setIsRunning] = useState(false);
   const [executionTime, setExecutionTime] = useState(null);
   const [memoryUsed, setMemoryUsed] = useState(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const fullScreenContainerRef = useRef(null);
+
+  const handleFullScreenToggle = () => {
+    const elem = fullScreenContainerRef.current;
+    if (!elem) return;
+
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen().catch((err) => {
+        alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullScreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullScreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullScreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullScreenChange);
+    };
+  }, []);
 
   const runCode = async () => {
     setIsRunning(true);
@@ -107,7 +136,7 @@ int main() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <Header />
       
       <main className="container mx-auto px-4 py-8 max-w-7xl">
@@ -153,27 +182,33 @@ int main() {
         </div>
 
         {/* Main Editor and Output Section */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-12">
-          <div className="space-y-4">
-            <CodeEditor 
-              code={code} 
-              setCode={setCode} 
-              clearCode={clearCode}
-              language={language}
-              runCode={runCode}
-            />
-          </div>
-
-          <div className="space-y-4">
-            <InputOutput 
-              input={input}
-              setInput={setInput}
-              runCode={runCode}
-              isRunning={isRunning}
-              output={output}
-              executionTime={executionTime}
-              memoryUsed={memoryUsed}
-            />
+        <div 
+          ref={fullScreenContainerRef} 
+          className={isFullScreen ? "fixed inset-0 bg-gray-900 z-50 p-4" : ""}
+        >
+          <div className={`h-full grid ${isFullScreen ? 'grid-cols-1 md:grid-cols-[7fr_3fr]' : 'grid-cols-1 xl:grid-cols-2'} gap-8`}>
+            <div className="flex flex-col h-full">
+              <CodeEditor 
+                code={code} 
+                setCode={setCode} 
+                clearCode={clearCode}
+                language={language}
+                runCode={runCode}
+                isFullScreen={isFullScreen}
+                onFullScreenToggle={handleFullScreenToggle}
+              />
+            </div>
+            <div className={`flex flex-col h-full ${isFullScreen ? '' : 'max-h-[85vh]'}`}>
+              <InputOutput
+                input={input}
+                setInput={setInput}
+                runCode={runCode}
+                isRunning={isRunning}
+                output={output}
+                executionTime={executionTime}
+                memoryUsed={memoryUsed}
+              />
+            </div>
           </div>
         </div>
 

@@ -2,17 +2,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import MonacoEditor from "@monaco-editor/react";
-import { TrashIcon, DocumentDuplicateIcon, PlayIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon } from "@heroicons/react/24/outline";
+import { languageMap } from "../utils/constants";
 
-// Map Judge0 language IDs to Monaco languages
-const languageMap = {
-  "54": "cpp",
-  "71": "python",
-  "62": "java",
-  "63": "javascript",
-  "52": "c",
-  // Add more if needed
-};
+// Map Judge0 language IDs to Monaco languages is now handled by the import
 
 // --- Custom suggestion logic (from CodeSuggestions.js, simplified) ---
 const getSuggestions = (language, currentWord) => {
@@ -40,11 +33,20 @@ const getSuggestions = (language, currentWord) => {
 };
 // --- End custom suggestion logic ---
 
-export default function CodeEditor({ code, setCode, clearCode, language, runCode }) {
+export default function CodeEditor({ 
+  code, 
+  setCode, 
+  clearCode, 
+  language, 
+  runCode,
+  isFullScreen,
+  onFullScreenToggle
+}) {
   const [cursorPosition, setCursorPosition] = useState(0);
   const [lineCount, setLineCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
   const editorRef = useRef(null);
+  const editorContainerRef = useRef(null);
   const monacoLang = languageMap[language] || "plaintext";
 
   // Register Monaco completion provider
@@ -131,7 +133,7 @@ export default function CodeEditor({ code, setCode, clearCode, language, runCode
   };
 
   return (
-    <div className="relative bg-gray-800 rounded-xl overflow-hidden border border-gray-700 card-hover">
+    <div ref={editorContainerRef} className="relative bg-gray-800 rounded-xl overflow-hidden border border-gray-700 card-hover flex flex-col h-full">
       {/* Enhanced Header */}
       <div className="flex items-center justify-between p-4 bg-gray-800/50 border-b border-gray-700">
         <div className="flex items-center gap-4">
@@ -159,6 +161,17 @@ export default function CodeEditor({ code, setCode, clearCode, language, runCode
           {/* Action Buttons */}
           <div className="flex items-center gap-1">
             <button
+              onClick={onFullScreenToggle}
+              className="p-2 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+              title={isFullScreen ? "Exit Full Screen" : "Full Screen"}
+            >
+              {isFullScreen ? (
+                <ArrowsPointingInIcon className="w-5 h-5" />
+              ) : (
+                <ArrowsPointingOutIcon className="w-5 h-5" />
+              )}
+            </button>
+            <button
               onClick={copyToClipboard}
               className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors focus-ring"
               title="Copy code"
@@ -184,7 +197,7 @@ export default function CodeEditor({ code, setCode, clearCode, language, runCode
       </div>
 
       {/* Code Editor */}
-      <div className="h-[70vh] relative">
+      <div className="relative flex-grow">
         <MonacoEditor
           key={monacoLang}
           height="100%"

@@ -27,10 +27,10 @@ export default function InputOutput({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col h-full space-y-4">
       {/* Input Section */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden card-hover">
-        <div className="flex items-center justify-between p-4 bg-gray-800/50 border-b border-gray-700">
+      <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden card-hover flex flex-col">
+        <div className="flex items-center justify-between p-4 bg-gray-800/50 border-b border-gray-700 flex-shrink-0">
           <div className="flex items-center gap-2">
             <DocumentTextIcon className="w-5 h-5 text-blue-400" />
             <span className="text-sm font-medium text-gray-300">Input (stdin)</span>
@@ -42,7 +42,7 @@ export default function InputOutput({
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full h-32 p-4 bg-gray-800 text-white border-0 focus:ring-0 resize-none font-mono text-sm"
+          className="w-full p-4 bg-gray-800 text-white border-0 focus:ring-0 resize-none font-mono text-sm flex-grow"
           placeholder="Enter input for your program..."
         />
       </div>
@@ -98,8 +98,8 @@ export default function InputOutput({
       )}
 
       {/* Output Section */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden card-hover">
-        <div className="flex items-center justify-between p-4 bg-gray-800/50 border-b border-gray-700">
+      <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden card-hover flex flex-col flex-grow">
+        <div className="flex items-center justify-between p-4 bg-gray-800/50 border-b border-gray-700 flex-shrink-0">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
             <span className="text-sm font-medium text-gray-300">Output</span>
@@ -128,7 +128,7 @@ export default function InputOutput({
           </div>
         </div>
         
-        <div className="h-64 relative">
+        <div className="h-full relative overflow-y-auto">
           <pre className={`w-full h-full p-4 font-mono text-sm overflow-auto ${
             activeTab === 'output' ? 'block' : 'hidden'
           }`}>

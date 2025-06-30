@@ -45,4 +45,13 @@ class Program
         Console.WriteLine($"Hello, {name}!");
     }
 }`,
+};
+
+export const languageMap = {
+  "54": "cpp",
+  "71": "python",
+  "62": "java",
+  "63": "javascript",
+  "50": "c",
+  "51": "csharp",
 }; 
