@@ -259,7 +259,7 @@ export default function HtmlPlayground() {
   const debounceRef = useRef();
   const [mounted, setMounted] = useState(false);
   const [dark, setDark] = useState(true);
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const [theme, setTheme] = useState('dark');
   const [consoleOutput, setConsoleOutput] = useState('');
   const [editorWidth, setEditorWidth] = useState(50); // percent
   const isResizing = useRef(false);
@@ -497,6 +497,13 @@ export default function HtmlPlayground() {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
     };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('theme');
+      if (stored) setTheme(stored);
+    }
   }, []);
 
   return (
