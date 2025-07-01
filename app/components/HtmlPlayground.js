@@ -1,7 +1,59 @@
 "use client";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import { DocumentDuplicateIcon, TrashIcon, PlayIcon } from "@heroicons/react/24/outline";
+import prettier from "prettier/standalone";
+import parserHtml from "prettier/plugins/html";
+import parserCss from "prettier/plugins/postcss";
+import parserBabel from "prettier/plugins/babel";
+
+// --- Monaco Editor options (from @file_context_0) ---
+const monacoOptions = {
+  fontSize: 14,
+  fontFamily: "JetBrains Mono, Fira Code, Cascadia Code, monospace",
+  minimap: { enabled: false },
+  wordWrap: "on",
+  scrollBeyondLastLine: false,
+  smoothScrolling: true,
+  scrollbar: { 
+    vertical: "auto", 
+    horizontal: "auto",
+    verticalScrollbarSize: 8,
+    horizontalScrollbarSize: 8
+  },
+  lineNumbers: "on",
+  glyphMargin: true,
+  folding: true,
+  lineDecorationsWidth: 20,
+  lineNumbersMinChars: 3,
+  renderLineHighlight: "all",
+  selectOnLineNumbers: true,
+  roundedSelection: false,
+  readOnly: false,
+  cursorStyle: "line",
+  automaticLayout: true,
+  contextmenu: true,
+  mouseWheelZoom: true,
+  quickSuggestions: true,
+  suggestOnTriggerCharacters: true,
+  acceptSuggestionOnEnter: "on",
+  tabCompletion: "on",
+  wordBasedSuggestions: true,
+  parameterHints: {
+    enabled: true
+  },
+  autoIndent: "full",
+  formatOnPaste: true,
+  formatOnType: true,
+  bracketPairColorization: {
+    enabled: true
+  },
+  guides: {
+    bracketPairs: true,
+    indentation: true
+  }
+};
+// ---
 
 const defaultHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -193,9 +245,9 @@ const defaultCss = `   * {
         font-size: 2rem;
       }
     }`;
-const defaultJs = `document.body.style.border = '4px solid #4f46e5';`;
+const defaultJs = `console.log('Hello World');`;
 
-const tabNames = ['HTML', 'CSS', 'JS'];
+const tabNames = ['HTML', 'CSS', 'JS', 'Console'];
 
 export default function HtmlPlayground() {
   const [activeTab, setActiveTab] = useState('HTML');
@@ -205,6 +257,12 @@ export default function HtmlPlayground() {
   const [srcDoc, setSrcDoc] = useState('');
   const iframeRef = useRef();
   const debounceRef = useRef();
+  const [mounted, setMounted] = useState(false);
+  const [dark, setDark] = useState(true);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const [consoleOutput, setConsoleOutput] = useState('');
+  const [editorWidth, setEditorWidth] = useState(50); // percent
+  const isResizing = useRef(false);
 
   // --- Begin: Add copy, clear, and run actions for each tab ---
   const copyToClipboard = async () => {
@@ -227,8 +285,67 @@ export default function HtmlPlayground() {
   };
 
   const runCode = () => {
-    const code = `<!DOCTYPE html>\n<html>\n<head>\n<style>${css}</style>\n</head>\n<body>\n${html}\n<script>${js}<\/script>\n</body>\n</html>`;
+    let output = '';
+    const log = (...args) => {
+      output += args.join(' ') + '\n';
+    };
+    const error = (...args) => {
+      output += 'Error: ' + args.join(' ') + '\n';
+    };
+
+    // Create a new function with user JS, override console
+    const jsWithConsole = `
+      (function() {
+        const console = { log: (...args) => window.parent.postMessage({ type: 'log', args }, '*'), error: (...args) => window.parent.postMessage({ type: 'error', args }, '*') };
+        try {
+          ${js}
+        } catch (e) {
+          console.error(e);
+        }
+      })();
+    `;
+
+    const code = `<!DOCTYPE html>
+<html>
+<head>
+  <style>${css}</style>
+</head>
+<body>
+  ${html}
+  <script>
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.type === 'run-js') {
+        try {
+          eval(event.data.code);
+        } catch (e) {
+          window.parent.postMessage({ type: 'error', args: [e.message] }, '*');
+        }
+      }
+    });
+    window.parent.postMessage({ type: 'ready' }, '*');
+  <\/script>
+</body>
+</html>`;
+
     setSrcDoc(code);
+
+    // Listen for logs from iframe
+    window.onmessage = (event) => {
+      if (event.data.type === 'log') {
+        setConsoleOutput((prev) => prev + event.data.args.join(' ') + '\n');
+      }
+      if (event.data.type === 'error') {
+        setConsoleOutput((prev) => prev + 'Error: ' + event.data.args.join(' ') + '\n');
+      }
+    };
+
+    // Send JS to iframe after it loads
+    setTimeout(() => {
+      const iframe = iframeRef.current;
+      if (iframe) {
+        iframe.contentWindow.postMessage({ type: 'run-js', code: jsWithConsole }, '*');
+      }
+    }, 500);
   };
   // --- End: Add copy, clear, and run actions for each tab ---
 
@@ -242,28 +359,150 @@ export default function HtmlPlayground() {
   // Run once on mount
   React.useEffect(() => { runCode(); }, []);
 
+  useEffect(() => {
+    if (!mounted) return;
+    
+    if (dark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [dark, mounted]);
+
+  // Safe way to access localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setHtml(localStorage.getItem('html') || defaultHtml);
+      setCss(localStorage.getItem('css') || defaultCss);
+      setJs(localStorage.getItem('js') || defaultJs);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('html', html);
+      localStorage.setItem('css', css);
+      localStorage.setItem('js', js);
+    }
+  }, [html, css, js]);
+
+  // On mount, load from localStorage
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const codeParam = params.get('code');
+    if (codeParam) {
+      try {
+        const data = JSON.parse(decodeURIComponent(escape(atob(codeParam))));
+        setHtml(data.html || defaultHtml);
+        setCss(data.css || defaultCss);
+        setJs(data.js || defaultJs);
+        return;
+      } catch (e) {
+        // fallback to localStorage if decode fails
+      }
+    }
+    setHtml(localStorage.getItem('html') || defaultHtml);
+    setCss(localStorage.getItem('css') || defaultCss);
+    setJs(localStorage.getItem('js') || defaultJs);
+    // eslint-disable-next-line
+  }, []);
+
+  function handleDownload() {
+    let filename, content, type;
+    if (activeTab === 'HTML') {
+      filename = 'index.html';
+      content = html;
+      type = 'text/html';
+    } else if (activeTab === 'CSS') {
+      filename = 'style.css';
+      content = css;
+      type = 'text/css';
+    } else if (activeTab === 'JS') {
+      filename = 'script.js';
+      content = js;
+      type = 'text/javascript';
+    }
+    const blob = new Blob([content], { type });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function handleShare() {
+    // Encode all code as base64
+    const data = {
+      html,
+      css,
+      js
+    };
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    // Create shareable URL
+    const url = `${window.location.origin}${window.location.pathname}?code=${encoded}`;
+    // Copy to clipboard
+    navigator.clipboard.writeText(url);
+    alert('Shareable link copied to clipboard!');
+  }
+
+  function handleFormat() {
+    try {
+      if (activeTab === "HTML") {
+        const formatted = prettier.format(html, {
+          parser: "html",
+          plugins: [parserHtml],
+        });
+        setHtml(typeof formatted === "string" ? formatted : html);
+      } else if (activeTab === "CSS") {
+        const formatted = prettier.format(css, {
+          parser: "css",
+          plugins: [parserCss],
+        });
+        setCss(typeof formatted === "string" ? formatted : css);
+      } else if (activeTab === "JS") {
+        const formatted = prettier.format(js, {
+          parser: "babel",
+          plugins: [parserBabel],
+        });
+        setJs(typeof formatted === "string" ? formatted : js);
+      }
+    } catch (e) {
+      alert("Formatting error: " + e.message);
+    }
+  }
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  React.useEffect(() => {
+    function onMouseMove(e) {
+      if (!isResizing.current) return;
+      const totalWidth = window.innerWidth;
+      let newWidth = (e.clientX / totalWidth) * 100;
+      if (newWidth < 20) newWidth = 20;
+      if (newWidth > 80) newWidth = 80;
+      setEditorWidth(newWidth);
+    }
+    function onMouseUp() {
+      isResizing.current = false;
+    }
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, []);
+
   return (
-    <div style={{ display: 'flex', height: '100vh', borderRadius: 12, overflow: 'hidden' }}>
-      <div style={{ width: '50%', display: 'flex', flexDirection: 'column', background: '#23232b' }}>
-        <div style={{ display: 'flex' }}>
-          {tabNames.map(tab => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                flex: 1,
-                padding: '0.5rem',
-                background: activeTab === tab ? '#18181b' : '#23232b',
-                border: 'none',
-                borderBottom: activeTab === tab ? '2px solid #4f46e5' : '2px solid transparent',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-              }}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+    <div style={{ display: 'flex', height: '100vh', borderRadius: 12, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ width: `${editorWidth}%`, display: 'flex', flexDirection: 'column', background: '#23232b' }}>
+      
         {/* --- Begin: Editor header with action buttons --- */}
         <div style={{
           display: 'flex',
@@ -328,45 +567,168 @@ export default function HtmlPlayground() {
             >
               <TrashIcon className="w-5 h-5" />
             </button>
+            <button
+              onClick={() => handleDownload()}
+              title="Download code"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#22c55e',
+                padding: 6,
+                borderRadius: 6,
+                cursor: 'pointer',
+                transition: 'background 0.15s'
+              }}
+              onMouseOver={e => e.currentTarget.style.background = '#222'}
+              onMouseOut={e => e.currentTarget.style.background = 'none'}
+            >
+              ⬇️
+            </button>
+            <button
+              onClick={handleShare}
+              title="Share code"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#38bdf8',
+                padding: 6,
+                borderRadius: 6,
+                cursor: 'pointer',
+                transition: 'background 0.15s'
+              }}
+              onMouseOver={e => e.currentTarget.style.background = '#222'}
+              onMouseOut={e => e.currentTarget.style.background = 'none'}
+            >
+              🔗
+            </button>
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: theme === 'dark' ? '#fff' : '#222',
+                fontSize: 20,
+                cursor: 'pointer',
+                marginLeft: 12
+              }}
+              title="Toggle theme"
+            >
+              {theme === 'dark' ? '🌙' : '☀️'}
+            </button>
+            <button
+              onClick={handleFormat}
+              title="Format code"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#f59e42',
+                padding: 6,
+                borderRadius: 6,
+                cursor: 'pointer',
+                transition: 'background 0.15s'
+              }}
+              onMouseOver={e => e.currentTarget.style.background = '#222'}
+              onMouseOut={e => e.currentTarget.style.background = 'none'}
+            >
+              🎨
+            </button>
           </div>
+        </div>
+          <div
+          style={{
+            display: 'flex',
+            background: '#18181b',
+            position: 'sticky',
+            top: 0,
+            zIndex: 10,
+            borderBottom: '1px solid #222'
+          }}
+        >
+          {tabNames.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                flex: 1,
+                padding: '0.5rem',
+                background: activeTab === tab ? '#18181b' : '#23232b',
+                border: 'none',
+                borderBottom: activeTab === tab ? '2px solid #4f46e5' : '2px solid transparent',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                color: '#fff'
+              }}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
         {/* --- End: Editor header with action buttons --- */}
         <div style={{ flex: 1, minHeight: 0 }}>
           {activeTab === 'HTML' && (
             <MonacoEditor
               language="html"
-              value={html}
+              value={html || ""}
               onChange={setHtml}
-              options={{ theme: 'vs-dark', fontSize: 15, minimap: { enabled: false } }}
+              theme={theme === 'dark' ? 'vs-dark' : 'vs-light'}
+              options={{ ...monacoOptions, theme: theme === 'dark' ? 'vs-dark' : 'vs-light' }}
               height="100%"
             />
           )}
           {activeTab === 'CSS' && (
             <MonacoEditor
               language="css"
-              value={css}
+              value={css || ""}
               onChange={setCss}
-              options={{ theme: 'vs-dark', fontSize: 15, minimap: { enabled: false } }}
+              theme={theme === 'dark' ? 'vs-dark' : 'vs-light'}
+              options={{ fontSize: 15, minimap: { enabled: false } }}
               height="100%"
             />
           )}
           {activeTab === 'JS' && (
             <MonacoEditor
               language="javascript"
-              value={js}
+              value={js || ""}
               onChange={setJs}
-              options={{ theme: 'vs-dark', fontSize: 15, minimap: { enabled: false } }}
+              theme={theme === 'dark' ? 'vs-dark' : 'vs-light'}
+              options={{ fontSize: 15, minimap: { enabled: false } }}
               height="100%"
             />
           )}
+          {activeTab === 'Console' && (
+            <div style={{
+              background: '#18181b',
+              color: '#0f0',
+              fontFamily: 'monospace',
+              padding: 16,
+              height: '100%',
+              overflowY: 'auto',
+              whiteSpace: 'pre-wrap'
+            }}>
+              {consoleOutput || 'No output yet.'}
+            </div>
+          )}
         </div>
       </div>
-      <div style={{ width: '50%', background: '#fff', height: '100%' }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: `${editorWidth}%`,
+          width: 8,
+          height: '100%',
+          cursor: 'col-resize',
+          zIndex: 100,
+          background: 'transparent'
+        }}
+        onMouseDown={() => { isResizing.current = true; }}
+      />
+      <div style={{ width: `${100 - editorWidth}%`, background: '#fff', height: '100%' }}>
         <iframe
           ref={iframeRef}
           title="Output"
           style={{ width: '100%', height: '100%', border: 'none',}}
-          sandbox="allow-scripts allow-same-origin allow-modals"
+          sandbox="allow-scripts allow-modals"
           srcDoc={srcDoc}
         />
       </div>
