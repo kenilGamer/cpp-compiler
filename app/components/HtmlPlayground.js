@@ -285,6 +285,8 @@ export default function HtmlPlayground() {
   };
 
   const runCode = () => {
+    setConsoleOutput('');
+
     let output = '';
     const log = (...args) => {
       output += args.join(' ') + '\n';
