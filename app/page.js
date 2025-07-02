@@ -8,10 +8,9 @@ import ExampleButtons from "./components/ExampleButtons";
 import CodeEditor from "./components/CodeEditor";
 import InputOutput from "./components/InputOutput";
 import FeaturesList from "./components/FeaturesList";
-import QuickActions from "./components/QuickActions";
 import Footer from "./components/Footer";
 import { languages, examples } from "./utils/constants";
-import { submitCode, getSubmissionResult, decodeBase64, estimateMemoryUsage } from "./utils/api";
+import { submitCode, estimateMemoryUsage } from "./utils/api";
 
 export default function Home() {
   const [code, setCode] = useState(`#include <iostream>
@@ -165,21 +164,7 @@ int main() {
           </div>
         </div>
 
-        {/* Language and Examples Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-1">
-            <LanguageSelector 
-              language={language} 
-              setLanguage={setLanguage} 
-              languages={languages} 
-            />
-            <ExampleButtons loadExample={loadExample} examples={examples} />
-          </div>
-          
-          <div className="lg:col-span-2">
-            <QuickActions setCode={setCode} language={language} />
-          </div>
-        </div>
+       
 
         {/* Main Editor and Output Section */}
         <div 
@@ -187,12 +172,13 @@ int main() {
           className={isFullScreen ? "fixed inset-0 bg-gray-900 z-50 p-4" : ""}
         >
           <div className={`h-full grid ${isFullScreen ? 'grid-cols-1 md:grid-cols-[7fr_3fr]' : 'grid-cols-1 xl:grid-cols-2'} gap-8`}>
-            <div className="flex flex-col h-full">
+            <div className="flex flex-col h-full ">
               <CodeEditor 
                 code={code} 
                 setCode={setCode} 
                 clearCode={clearCode}
                 language={language}
+                setLanguage={setLanguage}
                 runCode={runCode}
                 isFullScreen={isFullScreen}
                 onFullScreenToggle={handleFullScreenToggle}

@@ -700,54 +700,90 @@ console.log("Sum:", sum);`
 
 fetchData();`
       }
+    ],
+    "50": [
+      {
+        name: "Hello World",
+        description: "Basic C starter template",
+        icon: CodeBracketIcon,
+        category: "basics",
+        code: `#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\\n");
+    return 0;
+}`
+      },
+      {
+        name: "Input/Output",
+        description: "User input and output handling",
+        icon: DocumentTextIcon,
+        category: "basics",
+        code: `#include <stdio.h>
+
+int main() {
+    char name[50];
+    int age;
+    printf("Enter your name: ");
+    fgets(name, sizeof(name), stdin);
+    printf("Enter your age: ");
+    scanf("%d", &age);
+    printf("Hello %s, you are %d years old!\\n", name, age);
+    return 0;
+}`
+      },
+      {
+        name: "Array Operations",
+        description: "Array manipulation and sorting",
+        icon: CpuChipIcon,
+        category: "data-structures",
+        code: `#include <stdio.h>
+
+void sort(int arr[], int n) {
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int numbers[] = {5, 2, 8, 1, 9, 3};
+    int n = sizeof(numbers)/sizeof(numbers[0]);
+    sort(numbers, n);
+    printf("Sorted numbers: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", numbers[i]);
+    }
+
+    return 0;
+}`
+      }
     ]
   };
 
   const currentTemplates = quickTemplates[language] || quickTemplates["54"];
-  const categories = [...new Set(currentTemplates.map(t => t.category))];
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2 mb-4">
-        <SparklesIcon className="w-5 h-5 text-accent-color" />
-        <h3 className="text-lg font-semibold">Quick Templates</h3>
-      </div>
-      
-      {categories.map(category => (
-        <div key={category} className="space-y-1">
-          <h4 className="text-sm font-medium text-secondary capitalize">
-            {category.replace('-', ' ')} Templates
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
-            {currentTemplates
-              .filter(template => template.category === category)
-              .map((template) => {
-                const IconComponent = template.icon;
-                return (
-                  <button
-                    key={template.name}
-                    onClick={() => setCode(template.code)}
-                    className="group p-4 bg-secondary/50 hover:bg-secondary border border-border-color rounded-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg focus-ring"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 p-2 bg-accent-color/10 rounded-lg group-hover:bg-accent-color/20 transition-colors">
-                        <IconComponent className="w-5 h-5 text-accent-color" />
-                      </div>
-                      <div className="text-left flex-1 min-w-0">
-                        <h5 className="font-medium text-sm mb-1 group-hover:text-accent-color transition-colors">
-                          {template.name}
-                        </h5>
-                        <p className="text-xs text-muted leading-relaxed">
-                          {template.description}
-                        </p>
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-          </div>
-        </div>
-      ))}
+    <div className="flex flex-row gap-2 items-center">
+      {currentTemplates.map((template) => {
+        const IconComponent = template.icon;
+        return (
+          <button
+            key={template.name}
+            onClick={() => setCode(template.code)}
+            className="p-2 text-gray-400 hover:text-accent-color hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            title={`${template.name}: ${template.description}`}
+            type="button"
+          >
+            <IconComponent className="w-5 h-5" />
+          </button>
+        );
+      })}
     </div>
   );
 } 

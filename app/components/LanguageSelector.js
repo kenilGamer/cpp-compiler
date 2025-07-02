@@ -20,9 +20,7 @@ export default function LanguageSelector({ language, setLanguage, languages }) {
 
   return (
     <div className="relative">
-      <label className="block text-sm font-medium text-gray-300 mb-3">
-        Programming Language
-      </label>
+     
       
       <div className="relative">
         <button
@@ -70,18 +68,7 @@ export default function LanguageSelector({ language, setLanguage, languages }) {
         )}
       </div>
 
-      {/* Language Info */}
-      <div className="mt-3 p-3 bg-gray-800/50 rounded-lg border border-gray-700">
-        <div className="flex items-center gap-2 mb-2">
-          <CodeBracketIcon className="w-4 h-4 text-blue-400" />
-          <span className="text-xs font-medium text-gray-300">Language Info</span>
-        </div>
-        <div className="text-xs text-gray-400 space-y-1">
-          <div>• Syntax highlighting enabled</div>
-          <div>• Auto-completion available</div>
-          <div>• Error detection active</div>
-        </div>
-      </div>
+     
     </div>
   );
 } 

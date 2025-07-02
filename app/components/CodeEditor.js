@@ -2,8 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import MonacoEditor from "@monaco-editor/react";
-import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon } from "@heroicons/react/24/outline";
-import { languageMap } from "../utils/constants";
+import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon, FaceSmileIcon } from "@heroicons/react/24/outline";
+import { languageMap, languages } from "../utils/constants";
+import QuickActions from "./QuickActions";
+import LanguageSelector from "./LanguageSelector";
+
 
 // Map Judge0 language IDs to Monaco languages is now handled by the import
 
@@ -38,6 +41,7 @@ export default function CodeEditor({
   setCode, 
   clearCode, 
   language, 
+  setLanguage,
   runCode,
   isFullScreen,
   onFullScreenToggle
@@ -132,8 +136,27 @@ export default function CodeEditor({
     }
   };
 
+  // Helper to get language display name and version
+  const getLanguageInfo = () => {
+    const langObj = languages.find(l => l.id === language);
+    if (!langObj) return { name: "Unknown", version: "" };
+    return { name: langObj.name, version: langObj.version || "" };
+  };
+  const langInfo = getLanguageInfo();
+
   return (
-    <div ref={editorContainerRef} className="relative bg-gray-800 rounded-xl overflow-hidden border border-gray-700 card-hover flex flex-col h-full">
+    <div ref={editorContainerRef} className="relative bg-gray-800 rounded-xl overflow-hidden border border-gray-700 card-hover flex flex-col h-screen">
+      {/* Language Info Bar */}
+      <LanguageSelector 
+        language={language} 
+        setLanguage={setLanguage} 
+        languages={languages} 
+      />
+
+      {/* Quick Templates */}
+      <div className="p-4 border-b border-gray-700 bg-gray-800/40">
+        <QuickActions setCode={setCode} language={language} />
+      </div>
       {/* Enhanced Header */}
       <div className="flex items-center justify-between p-4 bg-gray-800/50 border-b border-gray-700">
         <div className="flex items-center gap-4">
@@ -195,7 +218,6 @@ export default function CodeEditor({
           </div>
         </div>
       </div>
-
       {/* Code Editor */}
       <div className="relative flex-grow">
         <MonacoEditor
@@ -253,7 +275,6 @@ export default function CodeEditor({
           }}
         />
       </div>
-
       {/* Enhanced Footer */}
       <div className="flex items-center justify-between p-3 bg-gray-800/30 border-t border-gray-700">
         <div className="flex items-center gap-4 text-xs text-gray-400">
@@ -270,6 +291,7 @@ export default function CodeEditor({
           <span>to save</span>
         </div>
       </div>
+    
     </div>
   );
 }
