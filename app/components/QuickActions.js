@@ -688,12 +688,10 @@ console.log("Sum:", sum);`
         category: "advanced",
         code: `async function fetchData() {
   try {
-    // Replace with a real API endpoint
-    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-    if (!response.ok) {
-      throw new Error(\`HTTP error! status: \${response.status}\`);
-    }
-    const data = await response.json();
+    // Simulate fetching data
+    const data = { id: 1, title: "Sample Todo", completed: false };
+    // Simulate network delay
+    await new Promise(res => setTimeout(res, 500));
     console.log("Fetched data:", data);
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -701,25 +699,6 @@ console.log("Sum:", sum);`
 }
 
 fetchData();`
-      },
-      {
-        name: "DOM Manipulation",
-        description: "Interact with HTML elements",
-        icon: PuzzlePieceIcon,
-        category: "dom",
-        code: `// This code requires an HTML document with an element with id="app"
-// For example: <div id="app"></div>
-
-const app = document.getElementById('app');
-if (app) {
-  app.innerHTML = '<h1>Hello from JavaScript!</h1>';
-  
-  const button = document.createElement('button');
-  button.textContent = 'Click Me';
-  button.onclick = () => alert('Button clicked!');
-  
-  app.appendChild(button);
-}`
       }
     ]
   };

@@ -287,6 +287,13 @@ export default function HtmlPlayground() {
   const runCode = () => {
     setConsoleOutput('');
 
+    // Block network requests in user JS code
+    const forbiddenPatterns = [/fetch\s*\(/i, /XMLHttpRequest/i, /axios\s*\./i, /require\(['"]http['"]\)/i, /require\(['"]https['"]\)/i];
+    if (forbiddenPatterns.some((pat) => pat.test(js))) {
+      setConsoleOutput('❌ Network requests are not allowed in this environment. Please remove fetch, XMLHttpRequest, axios, or similar code.');
+      return;
+    }
+
     let output = '';
     const log = (...args) => {
       output += args.join(' ') + '\n';
