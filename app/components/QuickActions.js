@@ -651,8 +651,7 @@ public class Main {
         System.out.println("String box: " + stringBox.getContent());
         System.out.println("Integer box: " + intBox.getContent());
     }
-}`
-      }
+}`      }
     ],
     "63": [
       {
@@ -712,8 +711,7 @@ fetchData();`
 int main() {
     printf("Hello, World!\\n");
     return 0;
-}`
-      },
+}`      },
       {
         name: "Input/Output",
         description: "User input and output handling",
@@ -730,8 +728,7 @@ int main() {
     scanf("%d", &age);
     printf("Hello %s, you are %d years old!\\n", name, age);
     return 0;
-}`
-      },
+}`      },
       {
         name: "Array Operations",
         description: "Array manipulation and sorting",
@@ -763,6 +760,62 @@ int main() {
     return 0;
 }`
       }
+    ],
+    "82": [
+      {
+        name: "Hello World",
+        description: "Basic SQL SELECT statement",
+        icon: CodeBracketIcon,
+        category: "basics",
+        code: `SELECT 'Hello, World!' AS greeting;`
+      },
+      {
+        name: "Create Table & Select",
+        description: "Create a table, insert data, and select from it",
+        icon: DocumentTextIcon,
+        category: "basics",
+        code: `CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  age INTEGER
+);
+INSERT INTO users (name, age) VALUES ('Alice', 30), ('Bob', 25);
+SELECT * FROM users;`
+      },
+      {
+        name: "Insert & Query",
+        description: "Insert data and run a query on the table",
+        icon: CpuChipIcon,
+        category: "data-manipulation",
+        code: `CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  age INTEGER
+);
+INSERT INTO users (name, age) VALUES ('Charlie', 22), ('Dana', 28);
+SELECT name FROM users WHERE age > 25;`
+      },
+      {
+        name: "Join Example",
+        description: "Create two tables, insert data, and run a JOIN query",
+        icon: PuzzlePieceIcon,
+        category: "advanced",
+        code: `CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL
+);
+CREATE TABLE orders (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER,
+  product TEXT,
+  FOREIGN KEY(user_id) REFERENCES users(id)
+);
+INSERT INTO users (name) VALUES ('Eve'), ('Frank');
+INSERT INTO orders (user_id, product) VALUES (1, 'Book'), (2, 'Pen');
+SELECT users.name, orders.product
+FROM users
+INNER JOIN orders ON users.id = orders.user_id;`
+      }
     ]
   };
 
@@ -787,3 +840,6 @@ int main() {
     </div>
   );
 } 
+
+
+

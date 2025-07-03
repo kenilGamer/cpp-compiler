@@ -21,6 +21,18 @@ const getSuggestions = (language, currentWord) => {
         if: `if (condition) {\n    // True block\n} else {\n    // False block\n}`
       }
     },
+    "82": {
+      keywords: [
+        "SELECT", "FROM", "WHERE", "INSERT", "INTO", "VALUES", "UPDATE", "SET", "DELETE", "CREATE", "TABLE", "PRIMARY KEY", "FOREIGN KEY", "REFERENCES", "DROP", "ALTER", "ADD", "JOIN", "INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "ON", "GROUP BY", "HAVING", "ORDER BY", "LIMIT", "OFFSET", "DISTINCT", "AS", "AND", "OR", "NOT", "NULL", "IS", "IN", "EXISTS", "BETWEEN", "LIKE", "UNION", "ALL", "VIEW","select","from","where","insert","into","values","update","set","delete","create","table","primary key","foreign key","references","drop","alter","add","join","inner join","left join","right join","on","group by","having","order by","limit","offset","distinct","as","and","or","not","null","is","in","exists","between","like","union","all","view"
+      ],
+      snippets: {
+        select: `SELECT column1, column2 FROM table WHERE condition;`,
+        insert: `INSERT INTO table (column1, column2) VALUES (value1, value2);`,
+        create_table: `CREATE TABLE table_name (\n  id INTEGER PRIMARY KEY,\n  column1 TEXT,\n  column2 INTEGER\n);`,
+        join: `SELECT a.col1, b.col2 FROM table1 a\nINNER JOIN table2 b ON a.id = b.fk_id;`,
+        group_by: `SELECT column, COUNT(*) FROM table\nGROUP BY column\nHAVING COUNT(*) > 1;`
+      }
+    },
     // Add more languages if needed
   };
   const lang = allSuggestions[language] || allSuggestions["54"];
@@ -32,6 +44,13 @@ const getSuggestions = (language, currentWord) => {
       filtered.push({ type: "snippet", text: key, snippet });
     }
   });
+  // If nothing matches, show all suggestions
+  if (filtered.length === 0) {
+    filtered.push(...lang.keywords.map(k => ({ type: "keyword", text: k })));
+    Object.entries(lang.snippets).forEach(([key, snippet]) => {
+      filtered.push({ type: "snippet", text: key, snippet });
+    });
+  }
   return filtered.slice(0, 10);
 };
 // --- End custom suggestion logic ---

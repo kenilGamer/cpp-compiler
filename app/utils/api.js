@@ -12,6 +12,7 @@ const LANGUAGE_MAP = {
   "71": "python",   // Python
   "63": "javascript", // JavaScript
   "51": "csharp",   // C# (Mono runtime)
+  "82": "sqlite3",  // SQL (SQLite3)
 };
 
 // Cache for runtimes
@@ -62,7 +63,8 @@ export const submitCode = async (languageId, source, stdin = "") => {
     "java": "java",
     "python": "py",
     "javascript": "js",
-    "csharp": "cs"
+    "csharp": "cs",
+    "sqlite3": "sql"
   };
   
   const fileExtension = fileExtensions[pistonLanguage];

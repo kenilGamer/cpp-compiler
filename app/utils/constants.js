@@ -5,6 +5,7 @@ export const languages = [
   { id: "71", name: "Python (3.8.1)" },
   { id: "63", name: "JavaScript (Node.js 12.14.0)" },
   { id: "51", name: "C# (Mono 6.6.0.161)" },
+  { id: "82", name: "SQL (SQLite 3.27.2)" },
 ];
 
 export const examples = {
@@ -54,4 +55,5 @@ export const languageMap = {
   "63": "javascript",
   "50": "c",
   "51": "csharp",
+  "82": "sql",
 }; 
