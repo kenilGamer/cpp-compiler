@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import MonacoEditor from "@monaco-editor/react";
-import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon, FolderIcon } from "@heroicons/react/24/outline";
 import { languageMap, languages } from "../utils/constants";
 import QuickActions from "./QuickActions";
 import LanguageSelector from "./LanguageSelector";
@@ -65,7 +65,6 @@ export default function CodeEditor({
   isFullScreen,
   onFullScreenToggle
 }) {
-  const [cursorPosition, setCursorPosition] = useState(0);
   const [lineCount, setLineCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
   const editorRef = useRef(null);
@@ -122,7 +121,6 @@ export default function CodeEditor({
       const model = editorRef.current.getModel();
       const pos = editorRef.current.getPosition();
       if (model && pos) {
-        setCursorPosition(model.getOffsetAt(pos));
         setLineCount(model.getLineCount());
       }
     }
@@ -134,7 +132,6 @@ export default function CodeEditor({
       const model = editor.getModel();
       const pos = editor.getPosition();
       if (model && pos) {
-        setCursorPosition(model.getOffsetAt(pos));
         setLineCount(model.getLineCount());
       }
     });
@@ -149,7 +146,6 @@ export default function CodeEditor({
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(code);
-      // You could add a toast notification here
     } catch (err) {
       console.error('Failed to copy code:', err);
     }
@@ -163,81 +159,62 @@ export default function CodeEditor({
   };
   const langInfo = getLanguageInfo();
 
+  // --- UI/UX ENHANCEMENTS START ---
   return (
-    <div ref={editorContainerRef} className="relative bg-gray-800 rounded-xl overflow-hidden border border-gray-700 card-hover flex flex-col h-screen">
-      {/* Language Info Bar */}
-      <LanguageSelector 
-        language={language} 
-        setLanguage={setLanguage} 
-        languages={languages} 
-      />
+    <div ref={editorContainerRef} className="flex flex-col h-screen bg-gray-900 rounded-xl overflow-hidden border border-gray-700 card-hover">
+      {/* Top Toolbar */}
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
+        <LanguageSelector 
+          language={language} 
+          setLanguage={setLanguage} 
+          languages={languages} 
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={copyToClipboard}
+            className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            title="Copy code"
+            aria-label="Copy code"
+          >
+            <DocumentDuplicateIcon className="w-4 h-4" />
+          </button>
+          <button
+            onClick={runCode}
+            className="p-2 text-gray-400 hover:text-green-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            title="Run code"
+            aria-label="Run code"
+          >
+            <PlayIcon className="w-4 h-4" />
+          </button>
+          <button
+            onClick={clearCode}
+            className="p-2 text-gray-400 hover:text-red-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            title="Clear code"
+            aria-label="Clear code"
+          >
+            <TrashIcon className="w-4 h-4" />
+          </button>
+          <button
+            onClick={onFullScreenToggle}
+            className="p-2 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            title={isFullScreen ? "Exit Full Screen" : "Full Screen"}
+            aria-label={isFullScreen ? "Exit Full Screen" : "Full Screen"}
+          >
+            {isFullScreen ? (
+              <ArrowsPointingInIcon className="w-5 h-5" />
+            ) : (
+              <ArrowsPointingOutIcon className="w-5 h-5" />
+            )}
+          </button>
+        </div>
+      </div>
 
       {/* Quick Templates */}
       <div className="p-4 border-b border-gray-700 bg-gray-800/40">
         <QuickActions setCode={setCode} language={language} />
       </div>
-      {/* Enhanced Header */}
-      <div className="flex items-center justify-between p-4 bg-gray-800/50 border-b border-gray-700">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-300">Source Code</span>
-            <span className="px-2 py-1 text-xs bg-gray-700 text-gray-300 rounded-md font-mono">
-              {monacoLang.toUpperCase()}
-            </span>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          {/* Stats */}
-          <div className="hidden sm:flex items-center gap-4 text-xs text-gray-400">
-            <span>{lineCount} lines</span>
-            <span>{charCount} chars</span>
-            <span>Ln {editorRef.current?.getPosition()?.lineNumber || 1}</span>
-          </div>
-          
-          {/* Action Buttons */}
-          <div className="flex items-center gap-1">
-            <button
-              onClick={onFullScreenToggle}
-              className="p-2 text-gray-400 hover:text-blue-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
-              title={isFullScreen ? "Exit Full Screen" : "Full Screen"}
-            >
-              {isFullScreen ? (
-                <ArrowsPointingInIcon className="w-5 h-5" />
-              ) : (
-                <ArrowsPointingOutIcon className="w-5 h-5" />
-              )}
-            </button>
-            <button
-              onClick={copyToClipboard}
-              className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors focus-ring"
-              title="Copy code"
-            >
-              <DocumentDuplicateIcon className="w-4 h-4" />
-            </button>
-            <button
-              onClick={runCode}
-              className="p-2 text-gray-400 hover:text-green-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
-              title="Run code"
-            >
-              <PlayIcon className="w-4 h-4" />
-            </button>
-            <button
-              onClick={clearCode}
-              className="p-2 text-gray-400 hover:text-red-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
-              title="Clear code"
-            >
-              <TrashIcon className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* Code Editor */}
+
+      {/* Editor */}
       <div className="relative flex-grow">
         <MonacoEditor
           key={monacoLang}
@@ -294,23 +271,37 @@ export default function CodeEditor({
           }}
         />
       </div>
-      {/* Enhanced Footer */}
-      <div className="flex items-center justify-between p-3 bg-gray-800/30 border-t border-gray-700">
-        <div className="flex items-center gap-4 text-xs text-gray-400">
-          <span className="flex items-center gap-1">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            Ready
-          </span>
-          <span>💡 Type 2+ characters for suggestions</span>
+
+      {/* Status Bar */}
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-t border-gray-700 text-xs text-gray-400">
+        <div className="flex items-center gap-4">
+          <span>{lineCount} lines</span>
+          <span>{charCount} chars</span>
+          <span>Ln {editorRef.current?.getPosition()?.lineNumber || 1}</span>
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-500">
+      </div>
+
+      {/* Footer with Shortcuts */}
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-t border-gray-700 text-xs text-gray-500">
+        <span>💡 Type 2+ characters for suggestions</span>
+        <div className="flex items-center gap-2">
           <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Ctrl</kbd>
           <span>+</span>
           <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">S</kbd>
-          <span>to save</span>
+          <span>Save</span>
+          <span className="mx-2">|</span>
+          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Ctrl</kbd>
+          <span>+</span>
+          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">O</kbd>
+          <span>Load</span>
+          <span className="mx-2">|</span>
+          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Ctrl</kbd>
+          <span>+</span>
+          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Enter</kbd>
+          <span>Run</span>
         </div>
       </div>
-    
     </div>
   );
+  // --- UI/UX ENHANCEMENTS END ---
 }

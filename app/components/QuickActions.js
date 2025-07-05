@@ -767,12 +767,19 @@ int main() {
         description: "Create a table, insert data, and select from it",
         icon: DocumentTextIcon,
         category: "basics",
-        code: `CREATE TABLE users (
+        code: `-- Create a simple users table
+CREATE TABLE users (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   age INTEGER
 );
-INSERT INTO users (name, age) VALUES ('Alice', 30), ('Bob', 25);
+
+-- Insert some sample data
+INSERT INTO users (name, age) VALUES ('Alice', 30);
+INSERT INTO users (name, age) VALUES ('Bob', 25);
+INSERT INTO users (name, age) VALUES ('Charlie', 35);
+
+-- Select all users
 SELECT * FROM users;`,
       },
       {
@@ -780,34 +787,97 @@ SELECT * FROM users;`,
         description: "Insert data and run a query on the table",
         icon: CpuChipIcon,
         category: "data-manipulation",
-        code: `CREATE TABLE users (
+        code: `-- Create a products table
+CREATE TABLE products (
   id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
-  age INTEGER
+  price REAL NOT NULL,
+  category TEXT
 );
-INSERT INTO users (name, age) VALUES ('Charlie', 22), ('Dana', 28);
-SELECT name FROM users WHERE age > 25;`,
+
+-- Insert sample products
+INSERT INTO products (name, price, category) VALUES ('Laptop', 999.99, 'Electronics');
+INSERT INTO products (name, price, category) VALUES ('Book', 19.99, 'Education');
+INSERT INTO products (name, price, category) VALUES ('Coffee', 4.99, 'Food');
+
+-- Query products over $50
+SELECT name, price FROM products WHERE price > 50;`,
       },
       {
         name: "Join Example",
         description: "Create two tables, insert data, and run a JOIN query",
         icon: PuzzlePieceIcon,
         category: "advanced",
-        code: `CREATE TABLE users (
+        code: `-- Create customers table
+CREATE TABLE customers (
   id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL
+  name TEXT NOT NULL,
+  email TEXT
 );
+
+-- Create orders table
 CREATE TABLE orders (
   id INTEGER PRIMARY KEY,
-  user_id INTEGER,
-  product TEXT,
-  FOREIGN KEY(user_id) REFERENCES users(id)
+  customer_id INTEGER,
+  product TEXT NOT NULL,
+  amount REAL NOT NULL,
+  order_date TEXT,
+  FOREIGN KEY(customer_id) REFERENCES customers(id)
 );
-INSERT INTO users (name) VALUES ('Eve'), ('Frank');
-INSERT INTO orders (user_id, product) VALUES (1, 'Book'), (2, 'Pen');
-SELECT users.name, orders.product
-FROM users
-INNER JOIN orders ON users.id = orders.user_id;`,
+
+-- Insert sample customers
+INSERT INTO customers (name, email) VALUES ('John Doe', 'john@example.com');
+INSERT INTO customers (name, email) VALUES ('Jane Smith', 'jane@example.com');
+INSERT INTO customers (name, email) VALUES ('Bob Wilson', 'bob@example.com');
+
+-- Insert sample orders
+INSERT INTO orders (customer_id, product, amount, order_date) VALUES (1, 'Laptop', 999.99, '2024-01-15');
+INSERT INTO orders (customer_id, product, amount, order_date) VALUES (2, 'Book', 19.99, '2024-01-16');
+INSERT INTO orders (customer_id, product, amount, order_date) VALUES (1, 'Mouse', 29.99, '2024-01-17');
+INSERT INTO orders (customer_id, product, amount, order_date) VALUES (3, 'Keyboard', 79.99, '2024-01-18');
+
+-- Join customers with their orders
+SELECT 
+  customers.name,
+  customers.email,
+  orders.product,
+  orders.amount,
+  orders.order_date
+FROM customers
+INNER JOIN orders ON customers.id = orders.customer_id
+ORDER BY orders.order_date;`,
+      },
+      {
+        name: "Aggregation Example",
+        description: "Use GROUP BY and aggregate functions",
+        icon: BeakerIcon,
+        category: "advanced",
+        code: `-- Create sales table
+CREATE TABLE sales (
+  id INTEGER PRIMARY KEY,
+  product TEXT NOT NULL,
+  quantity INTEGER NOT NULL,
+  price REAL NOT NULL,
+  sale_date TEXT
+);
+
+-- Insert sample sales data
+INSERT INTO sales (product, quantity, price, sale_date) VALUES ('Laptop', 2, 999.99, '2024-01-01');
+INSERT INTO sales (product, quantity, price, sale_date) VALUES ('Mouse', 5, 29.99, '2024-01-01');
+INSERT INTO sales (product, quantity, price, sale_date) VALUES ('Laptop', 1, 999.99, '2024-01-02');
+INSERT INTO sales (product, quantity, price, sale_date) VALUES ('Keyboard', 3, 79.99, '2024-01-02');
+INSERT INTO sales (product, quantity, price, sale_date) VALUES ('Mouse', 2, 29.99, '2024-01-03');
+
+-- Group by product and calculate totals
+SELECT 
+  product,
+  COUNT(*) as sales_count,
+  SUM(quantity) as total_quantity,
+  SUM(quantity * price) as total_revenue,
+  AVG(price) as avg_price
+FROM sales
+GROUP BY product
+ORDER BY total_revenue DESC;`,
       },
     ],
   };

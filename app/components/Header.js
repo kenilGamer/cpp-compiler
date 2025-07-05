@@ -82,11 +82,11 @@ export default function Header() {
             <a href="#features" className="nav-link font-medium">
               Features
             </a>
-            <a href="#examples" className="nav-link font-medium">
-              Examples
-            </a>
             <a href="/docs" className="nav-link font-medium">
               Documentation
+            </a>
+            <a href="/sql" className="nav-link font-medium">
+              sql compiler
             </a>
             <a href="/editor" className="nav-link font-medium">
               html compiler

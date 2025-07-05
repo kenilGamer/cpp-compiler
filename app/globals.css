@@ -195,3 +195,9 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+.header-scrolled{
+   background-color: #0a0a0ade;
+   color: #fff;
+   text-decoration: none;
+   transition: color 1.3s ; 
+}
