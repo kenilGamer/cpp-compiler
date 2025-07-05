@@ -11,7 +11,7 @@ import {
   SparklesIcon
 } from "@heroicons/react/24/outline";
 
-export default function FeaturesList() {
+  export default function FeaturesList() {
   const features = [
     {
       icon: BoltIcon,

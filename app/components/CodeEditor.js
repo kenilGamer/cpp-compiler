@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import MonacoEditor from "@monaco-editor/react";
-import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon, FaceSmileIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon } from "@heroicons/react/24/outline";
 import { languageMap, languages } from "../utils/constants";
 import QuickActions from "./QuickActions";
 import LanguageSelector from "./LanguageSelector";

@@ -1,21 +1,11 @@
 "use client";
 
-import { 
-  CodeBracketIcon, 
-  DocumentTextIcon, 
-  CpuChipIcon, 
-  BeakerIcon,
-  CogIcon,
-  SparklesIcon,
-  BoltIcon,
-  AcademicCapIcon,
-  PuzzlePieceIcon,
-  WrenchScrewdriverIcon
+import {CodeBracketIcon,DocumentTextIcon,CpuChipIcon,BeakerIcon,CogIcon,BoltIcon,AcademicCapIcon,PuzzlePieceIcon,WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 
 export default function QuickActions({ setCode, language }) {
   const quickTemplates = {
-    "54": [
+    54: [
       {
         name: "Hello World",
         description: "Basic C++ starter template",
@@ -27,7 +17,7 @@ using namespace std;
 int main() {
     cout << "Hello, World!" << endl;
     return 0;
-}`
+}`,
       },
       {
         name: "Input/Output",
@@ -50,7 +40,7 @@ int main() {
     
     cout << "Hello " << name << ", you are " << age << " years old!" << endl;
     return 0;
-}`
+}`,
       },
       {
         name: "Array Operations",
@@ -76,7 +66,7 @@ int main() {
     cout << endl;
     
     return 0;
-}`
+}`,
       },
       {
         name: "Class Template",
@@ -107,7 +97,7 @@ int main() {
     MyClass obj("Test", 42);
     obj.display();
     return 0;
-}`
+}`,
       },
       {
         name: "STL Containers",
@@ -142,7 +132,7 @@ int main() {
     cout << "Map size: " << myMap.size() << endl;
     
     return 0;
-}`
+}`,
       },
       {
         name: "Algorithms",
@@ -174,7 +164,7 @@ int main() {
     cout << "Sum: " << sum << endl;
     
     return 0;
-}`
+}`,
       },
       {
         name: "Exception Handling",
@@ -201,7 +191,7 @@ int main() {
     }
     
     return 0;
-}`
+}`,
       },
       {
         name: "Templates",
@@ -235,10 +225,10 @@ int main() {
     cout << "Max double: " << findMax(doubleVec) << endl;
     
     return 0;
-}`
-      }
+}`,
+      },
     ],
-    "71": [
+    71: [
       {
         name: "Hello World",
         description: "Basic Python starter template",
@@ -254,7 +244,7 @@ def main():
     print("Hello, World!")
 
 if __name__ == "__main__":
-    main()`
+    main()`,
       },
       {
         name: "Input/Output",
@@ -268,7 +258,7 @@ if __name__ == "__main__":
     print(f"Hello {name}, you are {age} years old!")
 
 if __name__ == "__main__":
-    main()`
+    main()`,
       },
       {
         name: "List Operations",
@@ -291,7 +281,7 @@ if __name__ == "__main__":
     print("Even numbers:", evens)
 
 if __name__ == "__main__":
-    main()`
+    main()`,
       },
       {
         name: "Class Template",
@@ -317,7 +307,7 @@ def main():
     obj.display()
 
 if __name__ == "__main__":
-    main()`
+    main()`,
       },
       {
         name: "Data Structures",
@@ -345,7 +335,7 @@ def main():
     print("Set:", my_set)
 
 if __name__ == "__main__":
-    main()`
+    main()`,
       },
       {
         name: "Decorators",
@@ -375,7 +365,7 @@ def main():
     print(result)
 
 if __name__ == "__main__":
-    main()`
+    main()`,
       },
       {
         name: "Exception Handling",
@@ -399,7 +389,7 @@ def main():
         print("Cleanup code")
 
 if __name__ == "__main__":
-    main()`
+    main()`,
       },
       {
         name: "Generators",
@@ -424,10 +414,10 @@ def main():
     print("Squares:", list(squares))
 
 if __name__ == "__main__":
-    main()`
-      }
+    main()`,
+      },
     ],
-    "62": [
+    62: [
       {
         name: "Hello World",
         description: "Basic Java starter template",
@@ -439,7 +429,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello, World!");
     }
-}`
+}`,
       },
       {
         name: "Input/Output",
@@ -461,7 +451,7 @@ public class Main {
         System.out.println("Hello " + name + ", you are " + age + " years old!");
         scanner.close();
     }
-}`
+}`,
       },
       {
         name: "Array Operations",
@@ -490,7 +480,7 @@ public class Main {
                                   .collect(Collectors.toList());
         System.out.println("List: " + list);
     }
-}`
+}`,
       },
       {
         name: "Class Template",
@@ -524,7 +514,7 @@ public class Main {
         MyClass obj = new MyClass("Test", 42);
         obj.display();
     }
-}`
+}`,
       },
       {
         name: "Collections",
@@ -557,7 +547,7 @@ public class Main {
         System.out.println("Map: " + map);
         System.out.println("Set: " + set);
     }
-}`
+}`,
       },
       {
         name: "Streams",
@@ -584,7 +574,7 @@ public class Main {
         System.out.println("Doubled evens: " + doubledEvens);
         System.out.println("Sum: " + sum);
     }
-}`
+}`,
       },
       {
         name: "Exception Handling",
@@ -611,7 +601,7 @@ public class Main {
             System.out.println("Cleanup code");
         }
     }
-}`
+}`,
       },
       {
         name: "Generics",
@@ -651,15 +641,16 @@ public class Main {
         System.out.println("String box: " + stringBox.getContent());
         System.out.println("Integer box: " + intBox.getContent());
     }
-}`      }
+}`,
+      },
     ],
-    "63": [
+    63: [
       {
         name: "Hello World",
         description: "Basic JavaScript starter template",
         icon: CodeBracketIcon,
         category: "basics",
-        code: `console.log("Hello, World!");`
+        code: `console.log("Hello, World!");`,
       },
       {
         name: "Array Operations",
@@ -678,7 +669,7 @@ console.log("Even numbers:", evens);
 
 // Reduce to get sum
 const sum = numbers.reduce((acc, n) => acc + n, 0);
-console.log("Sum:", sum);`
+console.log("Sum:", sum);`,
       },
       {
         name: "Async/Await",
@@ -697,10 +688,10 @@ console.log("Sum:", sum);`
   }
 }
 
-fetchData();`
-      }
+fetchData();`,
+      },
     ],
-    "50": [
+    50: [
       {
         name: "Hello World",
         description: "Basic C starter template",
@@ -711,7 +702,8 @@ fetchData();`
 int main() {
     printf("Hello, World!\\n");
     return 0;
-}`      },
+}`,
+      },
       {
         name: "Input/Output",
         description: "User input and output handling",
@@ -728,7 +720,8 @@ int main() {
     scanf("%d", &age);
     printf("Hello %s, you are %d years old!\\n", name, age);
     return 0;
-}`      },
+}`,
+      },
       {
         name: "Array Operations",
         description: "Array manipulation and sorting",
@@ -758,16 +751,16 @@ int main() {
     }
 
     return 0;
-}`
-      }
+}`,
+      },
     ],
-    "82": [
+    82: [
       {
         name: "Hello World",
         description: "Basic SQL SELECT statement",
         icon: CodeBracketIcon,
         category: "basics",
-        code: `SELECT 'Hello, World!' AS greeting;`
+        code: `SELECT 'Hello, World!' AS greeting;`,
       },
       {
         name: "Create Table & Select",
@@ -780,7 +773,7 @@ int main() {
   age INTEGER
 );
 INSERT INTO users (name, age) VALUES ('Alice', 30), ('Bob', 25);
-SELECT * FROM users;`
+SELECT * FROM users;`,
       },
       {
         name: "Insert & Query",
@@ -793,7 +786,7 @@ SELECT * FROM users;`
   age INTEGER
 );
 INSERT INTO users (name, age) VALUES ('Charlie', 22), ('Dana', 28);
-SELECT name FROM users WHERE age > 25;`
+SELECT name FROM users WHERE age > 25;`,
       },
       {
         name: "Join Example",
@@ -814,9 +807,9 @@ INSERT INTO users (name) VALUES ('Eve'), ('Frank');
 INSERT INTO orders (user_id, product) VALUES (1, 'Book'), (2, 'Pen');
 SELECT users.name, orders.product
 FROM users
-INNER JOIN orders ON users.id = orders.user_id;`
-      }
-    ]
+INNER JOIN orders ON users.id = orders.user_id;`,
+      },
+    ],
   };
 
   const currentTemplates = quickTemplates[language] || quickTemplates["54"];
@@ -839,7 +832,4 @@ INNER JOIN orders ON users.id = orders.user_id;`
       })}
     </div>
   );
-} 
-
-
-
+}
