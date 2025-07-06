@@ -11,17 +11,20 @@ The application now includes comprehensive database functionality for saving, lo
 ### 1. Code Snippet Management
 
 #### Save Code Snippets
+
 - Save any code snippet with metadata (title, description, tags)
 - Automatic categorization by programming language
 - Support for all supported languages (C++, C, Java, Python, JavaScript, C#, SQL)
 
 #### Load Code Snippets
+
 - Browse saved snippets by language
 - Search functionality across titles, descriptions, and code content
 - Filter by categories and tags
 - Quick load with one click
 
 #### Edit and Delete
+
 - Edit existing snippets (title, description, tags, code)
 - Delete snippets with confirmation
 - Bulk operations support
@@ -29,17 +32,20 @@ The application now includes comprehensive database functionality for saving, lo
 ### 2. SQL-Specific Tools
 
 #### SQL Validation
+
 - Basic SQL syntax validation
 - Checks for required SQL keywords
 - Validates code structure
 
 #### SQL Formatting
+
 - Automatic SQL code formatting
 - Keyword capitalization
 - Proper spacing and indentation
 - Consistent formatting across different SQL dialects
 
 #### Quick SQL Queries
+
 - Pre-built SQL templates for common operations:
   - SELECT statements
   - INSERT operations
@@ -52,17 +58,20 @@ The application now includes comprehensive database functionality for saving, lo
 ### 3. Database Manager
 
 #### Database Structure
+
 - Visual database schema management
 - Table creation wizard
 - Column definition with data types
 - Primary key and constraint management
 
 #### Sample Databases
+
 - Pre-loaded sample database with users and orders tables
 - Realistic table structures for learning
 - Example queries and relationships
 
 #### Table Operations
+
 - View table structure
 - Generate sample queries
 - Quick SELECT statements
@@ -91,11 +100,13 @@ The application now includes comprehensive database functionality for saving, lo
 When using SQL language (language ID: 82), additional tools become available:
 
 #### SQL Tools Panel
+
 - **Validate SQL**: Check if your SQL code is syntactically correct
 - **Format SQL**: Automatically format your SQL code for better readability
 - **Quick Queries**: Insert common SQL patterns with one click
 
 #### Database Manager Panel
+
 - **Select Database**: Choose from available sample databases
 - **View Tables**: See table structures and relationships
 - **Create Tables**: Use the visual table creation wizard
@@ -104,18 +115,21 @@ When using SQL language (language ID: 82), additional tools become available:
 ## Data Storage
 
 ### Local Storage
+
 - All snippets are stored in the browser's localStorage
 - Data persists between browser sessions
 - No external database required
 - Works offline
 
 ### Export/Import
+
 - Export all snippets as JSON file
 - Import snippets from JSON files
 - Merge functionality to avoid duplicates
 - Backup and restore capabilities
 
 ### Storage Statistics
+
 - View total number of snippets
 - Check storage size
 - Monitor language distribution
@@ -133,6 +147,7 @@ When using SQL language (language ID: 82), additional tools become available:
 ## SQL Language Support
 
 ### Supported SQL Features
+
 - Basic SQL syntax (SELECT, INSERT, UPDATE, DELETE)
 - Table creation and modification
 - JOIN operations
@@ -141,12 +156,14 @@ When using SQL language (language ID: 82), additional tools become available:
 - Constraints and indexes
 
 ### SQL Validation Rules
+
 - Must contain SQL keywords
 - Proper statement termination
 - Basic syntax checking
 - Keyword capitalization
 
 ### SQL Formatting Features
+
 - Automatic keyword capitalization
 - Consistent spacing
 - Proper indentation
@@ -155,18 +172,21 @@ When using SQL language (language ID: 82), additional tools become available:
 ## Technical Implementation
 
 ### Database Layer
+
 - `CodeDatabase` class for general snippet management
 - `SQLCodeManager` class for SQL-specific operations
 - localStorage-based persistence
 - JSON data format
 
 ### Components
+
 - `SaveLoadModal`: Main save/load interface
 - `SQLTools`: SQL-specific tools and validation
 - `DatabaseManager`: Database structure management
 - Integration with existing `CodeEditor` component
 
 ### Data Structure
+
 ```javascript
 {
   id: "unique_id",
@@ -185,6 +205,7 @@ When using SQL language (language ID: 82), additional tools become available:
 ## Future Enhancements
 
 ### Planned Features
+
 - Cloud storage integration
 - Collaborative sharing
 - Version control for snippets
@@ -193,6 +214,7 @@ When using SQL language (language ID: 82), additional tools become available:
 - Query optimization suggestions
 
 ### Potential Improvements
+
 - Real-time collaboration
 - Snippet templates and libraries
 - Advanced search and filtering
@@ -209,6 +231,7 @@ When using SQL language (language ID: 82), additional tools become available:
 4. **Storage full**: Export and clear old snippets to free up space
 
 ### Browser Compatibility
+
 - Modern browsers with localStorage support
 - Chrome, Firefox, Safari, Edge
 - Mobile browsers may have limited functionality
