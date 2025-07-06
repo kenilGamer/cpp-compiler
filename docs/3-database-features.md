@@ -225,4 +225,4 @@ To contribute to the database features:
 
 ## License
 
-This database functionality is part of the C++ Compiler application and follows the same licensing terms. 
+This database functionality is part of the C++ Compiler application and follows the same licensing terms.
