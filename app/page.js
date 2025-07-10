@@ -3,13 +3,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
-import LanguageSelector from "./components/LanguageSelector";
-import ExampleButtons from "./components/ExampleButtons";
+
 import CodeEditor from "./components/CodeEditor";
 import InputOutput from "./components/InputOutput";
 import FeaturesList from "./components/FeaturesList";
 import Footer from "./components/Footer";
-import { languages, examples } from "./utils/constants";
 import { submitCode, estimateMemoryUsage } from "./utils/api";
 
 export default function Home() {
@@ -136,8 +134,6 @@ int main() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <Header />
-      
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Hero Section */}
         <div className="text-center mb-12 animate-fade-in">

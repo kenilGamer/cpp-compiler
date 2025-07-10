@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { SunIcon, MoonIcon, CodeBracketIcon, BugAntIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Header() {
+  const { data: session } = useSession();
   const [dark, setDark] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -108,6 +111,16 @@ export default function Header() {
               )}
             </button>
 
+            {session ? (
+              <Link href="/profile" className="nav-link font-medium">
+                Profile
+              </Link>
+            ) : (
+              <Link href="/login" className="nav-link font-medium">
+                Login
+              </Link>
+            )}
+
             {/* Report Bug Button */}
             <a
               href="https://github.com/kenilgamer/cpp-compiler/issues/new"
@@ -143,4 +156,4 @@ export default function Header() {
       </div>
     </header>
   );
-} 
+}
