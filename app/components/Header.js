@@ -82,8 +82,8 @@ export default function Header() {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="nav-link font-medium">
-              Features
+            <a href="/" className="nav-link font-medium">
+              Home
             </a>
             <a href="/docs" className="nav-link font-medium">
               Documentation
