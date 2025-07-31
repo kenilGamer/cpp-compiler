@@ -75,7 +75,7 @@ export default function Header() {
               <CodeBracketIcon className="w-6 h-6 text-white" />
             </div>
             <div>
-              <span className="text-xl font-bold gradient-text">Online compiler</span>
+              <a href="/" className="text-xl font-bold gradient-text">Online compiler</a>
               <span className="ml-2 text-xs text-muted font-mono bg-tertiary px-2 py-1 rounded-md">v2.0</span>
             </div>
           </div>
@@ -89,10 +89,10 @@ export default function Header() {
               Documentation
             </a>
             <a href="/sql" className="nav-link font-medium">
-              sql compiler
+              SQL compiler
             </a>
             <a href="/editor" className="nav-link font-medium">
-              html compiler
+              HTML compiler
             </a>
           </nav>
 
