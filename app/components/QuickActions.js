@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {CodeBracketIcon,DocumentTextIcon,CpuChipIcon,BeakerIcon,CogIcon,BoltIcon,AcademicCapIcon,PuzzlePieceIcon,WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 
@@ -884,15 +885,89 @@ ORDER BY total_revenue DESC;`,
 
   const currentTemplates = quickTemplates[language] || quickTemplates["54"];
 
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
+
   return (
-    <div className="flex flex-row gap-2 items-center">
-      {currentTemplates.map((template) => {
+    <div className="flex flex-row gap-2 items-center flex-wrap">
+      <div className="relative">
+        <button
+          onClick={() => setShowDropdown(!showDropdown)}
+          className="px-3 py-2 text-sm font-medium text-foreground bg-secondary hover:bg-muted rounded-lg transition-colors focus-ring flex items-center gap-2"
+        >
+          <span>Templates</span>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        {showDropdown && (
+          <div className="absolute top-full left-0 mt-2 w-64 glass-strong rounded-lg border border-border-light shadow-xl z-50 max-h-96 overflow-y-auto">
+            <div className="p-2">
+              {currentTemplates.map((template) => {
+                const IconComponent = template.icon;
+                return (
+                  <button
+                    key={template.name}
+                    onClick={() => {
+                      setCode(template.code);
+                      setShowDropdown(false);
+                    }}
+                    className="w-full flex items-start gap-3 p-3 hover:bg-secondary rounded-lg transition-colors text-left"
+                  >
+                    <IconComponent className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium text-foreground">{template.name}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{template.description}</div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <button
+        onClick={() => setShowShortcuts(!showShortcuts)}
+        className="px-3 py-2 text-sm font-medium text-foreground bg-secondary hover:bg-muted rounded-lg transition-colors focus-ring"
+        title="Keyboard Shortcuts"
+      >
+        ⌘K
+      </button>
+
+      {showShortcuts && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setShowShortcuts(false)}>
+          <div className="glass-strong w-full max-w-2xl mx-4 rounded-xl border border-border-light shadow-2xl p-6" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-semibold text-foreground mb-4">Keyboard Shortcuts</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-2 rounded">
+                <span className="text-sm text-foreground">Run Code</span>
+                <kbd className="px-2 py-1 text-xs font-mono bg-secondary rounded border border-border">Ctrl+Enter</kbd>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded">
+                <span className="text-sm text-foreground">Format Code</span>
+                <kbd className="px-2 py-1 text-xs font-mono bg-secondary rounded border border-border">Shift+Alt+F</kbd>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded">
+                <span className="text-sm text-foreground">Save</span>
+                <kbd className="px-2 py-1 text-xs font-mono bg-secondary rounded border border-border">Ctrl+S</kbd>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded">
+                <span className="text-sm text-foreground">Command Palette</span>
+                <kbd className="px-2 py-1 text-xs font-mono bg-secondary rounded border border-border">Ctrl+K</kbd>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {currentTemplates.slice(0, 3).map((template) => {
         const IconComponent = template.icon;
         return (
           <button
             key={template.name}
             onClick={() => setCode(template.code)}
-            className="p-2 text-gray-400 hover:text-accent-color hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            className="p-2 text-muted-foreground hover:text-primary hover:bg-secondary rounded-lg transition-colors focus-ring"
             title={`${template.name}: ${template.description}`}
             type="button"
           >

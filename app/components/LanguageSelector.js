@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-
-const languageIcons = {
-  "54": "⚡", // C++
-  "71": "🐍", // Python
-  "62": "☕", // Java
-  "63": "🟨", // JavaScript
-  "52": "🔵", // C
-  "51": "🔴", // C#
-  "50": "📘", // C#
-};
+import LanguageIcon from "./LanguageIcons/LanguageIcon";
 
 export default function LanguageSelector({ language, setLanguage, languages }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,11 +16,11 @@ export default function LanguageSelector({ language, setLanguage, languages }) {
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex     items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-xl hover:bg-gray-700 transition-colors focus-ring"
+          className="w-full flex items-center justify-between p-4 bg-background-secondary border border-border rounded-lg hover:bg-secondary transition-colors focus-ring"
         >
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 bg-gray-700 rounded-lg">
-              <span className="text-lg">{languageIcons[language] || "💻"}</span>
+            <div className="flex items-center justify-center w-8 h-8 bg-secondary rounded-lg">
+              <LanguageIcon languageId={language} className="w-5 h-5 text-primary" />
             </div>
             <div className="text-left">
               <div className="font-medium text-white">{selectedLanguage?.name}</div>
@@ -40,7 +31,7 @@ export default function LanguageSelector({ language, setLanguage, languages }) {
         </button>
 
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800 border border-gray-700 rounded-xl shadow-xl z-10 max-h-64 overflow-y-auto">
+          <div className="absolute top-full left-0 right-0 mt-2 glass-strong border border-border-light rounded-lg shadow-xl z-10 max-h-64 overflow-y-auto">
             {languages.map(lang => (
               <button
                 key={lang.id}
@@ -48,12 +39,12 @@ export default function LanguageSelector({ language, setLanguage, languages }) {
                   setLanguage(lang.id);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 p-4 hover:bg-gray-700 transition-colors ${
-                  language === lang.id ? 'bg-blue-600/20 border-l-4 border-blue-500' : ''
+                className={`w-full flex items-center gap-3 p-4 hover:bg-secondary transition-colors ${
+                  language === lang.id ? 'bg-primary/20 border-l-4 border-primary' : ''
                 }`}
               >
-                <div className="flex items-center justify-center w-8 h-8 bg-gray-700 rounded-lg">
-                  <span className="text-lg">{languageIcons[lang.id] || "💻"}</span>
+                <div className="flex items-center justify-center w-8 h-8 bg-secondary rounded-lg">
+                  <LanguageIcon languageId={lang.id} className="w-5 h-5 text-primary" />
                 </div>
                 <div className="text-left">
                   <div className="font-medium text-white">{lang.name}</div>

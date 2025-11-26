@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Turbopack configuration (empty for now, using webpack for fallbacks)
+  turbopack: {},
+  
+  // Webpack configuration for client-side fallbacks
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {

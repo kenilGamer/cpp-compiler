@@ -2,10 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import MonacoEditor from "@monaco-editor/react";
-import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon, FolderIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, DocumentDuplicateIcon, PlayIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon, FolderIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { languageMap, languages } from "../utils/constants";
 import QuickActions from "./QuickActions";
 import LanguageSelector from "./LanguageSelector";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 
 // Map Judge0 language IDs to Monaco languages is now handled by the import
@@ -67,9 +68,71 @@ export default function CodeEditor({
 }) {
   const [lineCount, setLineCount] = useState(0);
   const [charCount, setCharCount] = useState(0);
+  const [tabs, setTabs] = useState([{ id: 1, name: "main", code, language }]);
+  const [activeTabId, setActiveTabId] = useState(1);
   const editorRef = useRef(null);
   const editorContainerRef = useRef(null);
   const monacoLang = languageMap[language] || "plaintext";
+  const { theme } = useTheme();
+
+  // Define custom Monaco theme
+  useEffect(() => {
+    if (window.monaco) {
+      window.monaco.editor.defineTheme('premium-dark', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
+          { token: 'keyword', foreground: '569CD6', fontStyle: 'bold' },
+          { token: 'string', foreground: 'CE9178' },
+          { token: 'number', foreground: 'B5CEA8' },
+          { token: 'type', foreground: '4EC9B0' },
+          { token: 'function', foreground: 'DCDCAA' },
+          { token: 'variable', foreground: '9CDCFE' },
+        ],
+        colors: {
+          'editor.background': '#0a0a0a',
+          'editor.foreground': '#ededed',
+          'editor.lineHighlightBackground': '#1a1a1a',
+          'editor.selectionBackground': '#264f78',
+          'editor.inactiveSelectionBackground': '#3a3d41',
+          'editorCursor.foreground': '#3b82f6',
+          'editorWhitespace.foreground': '#3a3d41',
+          'editorIndentGuide.background': '#3a3d41',
+          'editorIndentGuide.activeBackground': '#707070',
+          'editor.lineNumber.foreground': '#858585',
+          'editor.lineNumber.activeForeground': '#c6c6c6',
+          'editorGutter.background': '#0a0a0a',
+          'editorWidget.background': '#252526',
+          'editorWidget.border': '#454545',
+          'editorSuggestWidget.background': '#252526',
+          'editorSuggestWidget.border': '#454545',
+          'editorSuggestWidget.selectedBackground': '#2a2d2e',
+        }
+      });
+
+      window.monaco.editor.defineTheme('premium-light', {
+        base: 'vs',
+        inherit: true,
+        rules: [
+          { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
+          { token: 'keyword', foreground: '0000FF', fontStyle: 'bold' },
+          { token: 'string', foreground: 'A31515' },
+          { token: 'number', foreground: '098658' },
+          { token: 'type', foreground: '267F99' },
+          { token: 'function', foreground: '795E26' },
+          { token: 'variable', foreground: '001080' },
+        ],
+        colors: {
+          'editor.background': '#ffffff',
+          'editor.foreground': '#000000',
+          'editor.lineHighlightBackground': '#f0f0f0',
+          'editor.selectionBackground': '#add6ff',
+          'editorCursor.foreground': '#3b82f6',
+        }
+      });
+    }
+  }, []);
 
   // Register Monaco completion provider
   useEffect(() => {
@@ -126,8 +189,13 @@ export default function CodeEditor({
     }
   };
 
-  const handleEditorDidMount = (editor) => {
+  const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
+    
+    // Apply custom theme
+    const themeName = theme === 'dark' ? 'premium-dark' : 'premium-light';
+    monaco.editor.setTheme(themeName);
+    
     editor.onDidChangeCursorPosition(() => {
       const model = editor.getModel();
       const pos = editor.getPosition();
@@ -135,6 +203,7 @@ export default function CodeEditor({
         setLineCount(model.getLineCount());
       }
     });
+    
     // Set initial counts
     const model = editor.getModel();
     if (model) {
@@ -159,11 +228,87 @@ export default function CodeEditor({
   };
   const langInfo = getLanguageInfo();
 
+  // Tab management
+  const activeTab = tabs.find(t => t.id === activeTabId) || tabs[0];
+  const activeTabCode = activeTab?.code || code;
+
+  const addTab = () => {
+    const newTab = {
+      id: Date.now(),
+      name: `file-${tabs.length + 1}`,
+      code: '',
+      language
+    };
+    setTabs([...tabs, newTab]);
+    setActiveTabId(newTab.id);
+  };
+
+  const closeTab = (tabId) => {
+    if (tabs.length === 1) return;
+    const newTabs = tabs.filter(t => t.id !== tabId);
+    setTabs(newTabs);
+    if (tabId === activeTabId) {
+      setActiveTabId(newTabs[0].id);
+      setCode(newTabs[0].code);
+    }
+  };
+
+  const switchTab = (tabId) => {
+    setActiveTabId(tabId);
+    const tab = tabs.find(t => t.id === tabId);
+    if (tab) {
+      setCode(tab.code);
+      setLanguage(tab.language);
+    }
+  };
+
+  // Update active tab code when code changes
+  useEffect(() => {
+    setTabs(prev => prev.map(t => 
+      t.id === activeTabId ? { ...t, code } : t
+    ));
+  }, [code, activeTabId]);
+
   // --- UI/UX ENHANCEMENTS START ---
   return (
-    <div ref={editorContainerRef} className="flex flex-col h-screen bg-gray-900 rounded-xl overflow-hidden border border-gray-700 card-hover">
+    <div ref={editorContainerRef} className="flex flex-col h-full bg-background-secondary rounded-lg overflow-hidden border border-border card-glass">
+      {/* Tabs */}
+      <div className="flex items-center gap-1 px-2 pt-2 bg-background-tertiary border-b border-border overflow-x-auto">
+        {tabs.map(tab => (
+          <div
+            key={tab.id}
+            className={`flex items-center gap-2 px-3 py-2 rounded-t-lg cursor-pointer transition-colors ${
+              tab.id === activeTabId
+                ? 'bg-background-secondary border-t border-l border-r border-border text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-background-secondary/50'
+            }`}
+            onClick={() => switchTab(tab.id)}
+          >
+            <span className="text-sm font-medium whitespace-nowrap">{tab.name}</span>
+            {tabs.length > 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeTab(tab.id);
+                }}
+                className="p-0.5 rounded hover:bg-secondary"
+              >
+                <XMarkIcon className="w-3 h-3" />
+              </button>
+            )}
+          </div>
+        ))}
+        <button
+          onClick={addTab}
+          className="px-2 py-2 text-muted-foreground hover:text-foreground hover:bg-background-secondary/50 rounded transition-colors"
+          title="New tab"
+        >
+          +
+        </button>
+      </div>
+
       {/* Top Toolbar */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
+      <div className="flex items-center justify-between px-4 py-2 bg-background-tertiary border-b border-border">
         <LanguageSelector 
           language={language} 
           setLanguage={setLanguage} 
@@ -210,7 +355,7 @@ export default function CodeEditor({
       </div>
 
       {/* Quick Templates */}
-      <div className="p-4 border-b border-gray-700 bg-gray-800/40">
+      <div className="p-4 border-b border-border bg-background-tertiary/50">
         <QuickActions setCode={setCode} language={language} />
       </div>
 
@@ -221,13 +366,18 @@ export default function CodeEditor({
           height="100%"
           language={monacoLang}
           value={code}
-          theme="vs-dark"
+          theme={theme === 'dark' ? 'premium-dark' : 'premium-light'}
           onChange={handleEditorChange}
           onMount={handleEditorDidMount}
           options={{
             fontSize: 14,
             fontFamily: "JetBrains Mono, Fira Code, Cascadia Code, monospace",
-            minimap: { enabled: false },
+            minimap: { 
+              enabled: true,
+              side: 'right',
+              size: 'proportional',
+              showSlider: 'always',
+            },
             wordWrap: "on",
             scrollBeyondLastLine: false,
             smoothScrolling: true,
@@ -247,6 +397,8 @@ export default function CodeEditor({
             roundedSelection: false,
             readOnly: false,
             cursorStyle: "line",
+            cursorBlinking: "smooth",
+            cursorSmoothCaretAnimation: "on",
             automaticLayout: true,
             contextmenu: true,
             mouseWheelZoom: true,
@@ -273,16 +425,17 @@ export default function CodeEditor({
       </div>
 
       {/* Status Bar */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-t border-gray-700 text-xs text-gray-400">
+      <div className="flex items-center justify-between px-4 py-2 bg-background-tertiary border-t border-border text-xs text-muted-foreground">
         <div className="flex items-center gap-4">
           <span>{lineCount} lines</span>
           <span>{charCount} chars</span>
           <span>Ln {editorRef.current?.getPosition()?.lineNumber || 1}</span>
+          <span className="text-primary">{langInfo.name}</span>
         </div>
       </div>
 
       {/* Footer with Shortcuts */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-t border-gray-700 text-xs text-gray-500">
+      <div className="flex items-center justify-between px-4 py-2 bg-background-tertiary border-t border-border text-xs text-muted-foreground">
         <span>💡 Type 2+ characters for suggestions</span>
         <div className="flex items-center gap-2">
           <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Ctrl</kbd>
