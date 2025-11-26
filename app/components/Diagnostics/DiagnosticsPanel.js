@@ -30,7 +30,7 @@ export default function DiagnosticsPanel({
       case 'warning':
         return <ExclamationTriangleIcon className="w-5 h-5 text-yellow-400" />;
       case 'info':
-        return <InformationCircleIcon className="w-5 h-5 text-blue-400" />;
+        return <InformationCircleIcon className="w-5 h-5 text-primary" />;
       default:
         return null;
     }
@@ -43,7 +43,7 @@ export default function DiagnosticsPanel({
       case 'warning':
         return 'text-yellow-400 border-yellow-400/20 bg-yellow-400/10';
       case 'info':
-        return 'text-blue-400 border-blue-400/20 bg-blue-400/10';
+        return 'text-primary border-primary/20 bg-primary/10';
       default:
         return '';
     }

@@ -54,7 +54,7 @@ export default function DocsClient({ docs }) {
   const highlightSearchTerms = (text) => {
     if (!search.trim()) return text;
     const regex = new RegExp(`(${search})`, 'gi');
-    return text.replace(regex, '<mark class="bg-yellow-400/30 text-yellow-200 px-1 rounded">$1</mark>');
+    return text.replace(regex, '<mark class="bg-primary/30 text-primary px-1 rounded">$1</mark>');
   };
 
   // Extract headings for table of contents
@@ -73,49 +73,53 @@ export default function DocsClient({ docs }) {
   };
 
   return (
-    <div className="relative flex min-h-screen bg-gradient-to-br from-slate-900  via-blue-900/20 to-slate-900">
-      {/* Animated background elements */}
+    <div className="relative flex min-h-screen bg-gradient-to-br from-background via-background-secondary to-background">
+      {/* Enhanced Animated background elements with neon effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute w-96 h-96 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"
+          className="absolute w-96 h-96 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full blur-3xl float-animation"
           style={{
             left: `${mousePosition.x * 0.05}px`,
             top: `${mousePosition.y * 0.05}px`,
-            transform: 'translate(-50%, -50%)'
+            transform: 'translate(-50%, -50%)',
+            boxShadow: '0 0 100px rgba(0, 168, 204, 0.2)',
           }}
         />
         <div 
-          className="absolute w-80 h-80 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl animate-pulse delay-1000"
+          className="absolute w-80 h-80 bg-gradient-to-r from-accent/10 to-cyan/10 rounded-full blur-3xl float-animation"
           style={{
             right: `${mousePosition.x * 0.03}px`,
             bottom: `${mousePosition.y * 0.03}px`,
-            transform: 'translate(50%, 50%)'
+            transform: 'translate(50%, 50%)',
+            animationDelay: '1s',
+            boxShadow: '0 0 100px rgba(12, 123, 147, 0.2)',
           }}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 holographic opacity-30" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,168,204,0.08),transparent_50%)]" />
       </div>
 
-      {/* Enhanced Sidebar Navigation */}
-      <aside className="hidden lg:block w-80 flex-shrink-0 sticky top-0 h-screen bg-slate-900/95 border-r border-slate-700/50 backdrop-blur-xl shadow-2xl ">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 to-transparent" />
+      {/* Enhanced Sidebar Navigation with Premium Styling */}
+      <aside className="hidden lg:block w-80 flex-shrink-0 sticky top-0 h-screen glass-strong border-r border-border-light shadow-2xl">
+        <div className="absolute inset-0 bg-gradient-to-b from-background-secondary/50 to-transparent" />
         <div className="relative p-8">
           <div className="flex items-center gap-3 mb-8 group">
             <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-blue-500/25 transition-all duration-500 group-hover:scale-110">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary via-accent to-cyan rounded-lg flex items-center justify-center shadow-lg neon-glow group-hover:shadow-primary/50 transition-all duration-500 group-hover:scale-110">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-cyan rounded-lg blur opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
             </div>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+            <h2 className="text-2xl font-bold gradient-text-neon group-hover:scale-105 transition-transform duration-300">
               Documentation
             </h2>
           </div>
           
-          {/* Enhanced Search in sidebar */}
+          {/* Enhanced Search in sidebar with Premium Styling */}
           <div className="relative mb-6 group">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <input
               type="text"
               placeholder="Search documentation..."
@@ -123,13 +127,13 @@ export default function DocsClient({ docs }) {
               onChange={e => setSearch(e.target.value)}
               onFocus={() => setIsSearchFocused(true)}
               onBlur={() => setIsSearchFocused(false)}
-              className={`relative w-full px-4 py-3 rounded-xl bg-slate-800/60 border transition-all duration-500 ${
+              className={`relative w-full px-4 py-3 rounded-lg bg-background-secondary border transition-all duration-500 ${
                 isSearchFocused 
-                  ? 'border-blue-500/50 shadow-lg shadow-blue-500/30 scale-105' 
-                  : 'border-slate-600/50 hover:border-slate-500/50 hover:scale-102'
-              } text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 backdrop-blur-sm`}
+                  ? 'border-primary/50 shadow-lg shadow-primary/30 scale-105 neon-border' 
+                  : 'border-border hover:border-primary/30 hover:scale-102'
+              } text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 backdrop-blur-sm`}
             />
-            <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 transition-colors duration-300 group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground transition-colors duration-300 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -142,18 +146,18 @@ export default function DocsClient({ docs }) {
                 <a
                   key={doc.filename}
                   href={`#${doc.title.replace(/\s+/g, '-')}`}
-                  className={`group block px-4 py-3 rounded-xl transition-all duration-500 font-medium transform hover:scale-105 ${
+                  className={`group block px-4 py-3 rounded-lg transition-all duration-500 font-medium transform hover:scale-105 ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-600/30 to-purple-600/30 text-blue-300 border border-blue-500/40 shadow-xl shadow-blue-500/20 backdrop-blur-sm'
-                      : 'text-slate-300 hover:bg-slate-800/60 hover:text-slate-200 hover:shadow-lg hover:shadow-slate-500/10'
+                      ? 'bg-gradient-to-r from-primary/30 to-accent/30 text-primary border border-primary/40 shadow-xl shadow-primary/20 backdrop-blur-sm neon-glow'
+                      : 'text-foreground-secondary hover:bg-secondary hover:text-foreground hover:shadow-lg hover:shadow-primary/10'
                   } ${!isVisible ? 'opacity-50' : ''}`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-2 h-2 rounded-full transition-all duration-500 ${
                       isActive 
-                        ? 'bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg shadow-blue-400/50 scale-150' 
-                        : 'bg-slate-600 group-hover:bg-slate-500'
+                        ? 'bg-gradient-to-r from-primary to-accent shadow-lg shadow-primary/50 scale-150' 
+                        : 'bg-muted group-hover:bg-primary/50'
                     }`} />
                     <span className="transition-all duration-300 group-hover:translate-x-1">{doc.title}</span>
                   </div>
@@ -162,17 +166,17 @@ export default function DocsClient({ docs }) {
             })}
           </nav>
 
-          {/* Enhanced Quick stats */}
-          <div className="mt-8 p-4 bg-gradient-to-br from-slate-800/40 to-slate-700/40 rounded-xl border border-slate-600/50 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-500 group">
-            <div className="text-sm text-slate-400 mb-2 flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {/* Enhanced Quick stats with Premium Cards */}
+          <div className="mt-8 p-4 card-glass rounded-lg border border-border-light shadow-lg hover:shadow-xl transition-all duration-500 group">
+            <div className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
+              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               Documentation Stats
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-slate-300 group-hover:text-blue-300 transition-colors duration-300">Total: {docs.length}</span>
-              <span className="text-slate-300 group-hover:text-purple-300 transition-colors duration-300">Found: {filteredDocs.length}</span>
+              <span className="text-foreground group-hover:text-primary transition-colors duration-300 font-medium">Total: {docs.length}</span>
+              <span className="text-foreground group-hover:text-accent transition-colors duration-300 font-medium">Found: {filteredDocs.length}</span>
             </div>
           </div>
         </div>
@@ -186,19 +190,19 @@ export default function DocsClient({ docs }) {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => window.history.back()}
-                className="p-2 rounded-xl bg-slate-800/60 border border-slate-700/50 text-slate-300 hover:bg-slate-700/60 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="p-2 rounded-lg card-glass border border-border-light text-foreground hover:bg-secondary hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold gradient-text-neon">
                 Documentation
               </h1>
             </div>
             <button
               onClick={() => setShowTableOfContents(!showTableOfContents)}
-              className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/50 text-slate-300 hover:bg-slate-700/60 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="p-3 rounded-lg card-glass border border-border-light text-foreground hover:bg-secondary hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -208,29 +212,29 @@ export default function DocsClient({ docs }) {
           
           {/* Mobile search */}
           <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <input
               type="text"
               placeholder="Search documentation..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="relative w-full px-4 py-3 rounded-xl bg-slate-800/60 border border-slate-600/50 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300 backdrop-blur-sm"
+              className="relative w-full px-4 py-3 rounded-lg bg-background-secondary border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300 backdrop-blur-sm"
             />
-            <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 transition-colors duration-300 group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground transition-colors duration-300 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
 
           {/* Mobile navigation */}
           {showTableOfContents && (
-            <div className="mt-4 p-4 bg-gradient-to-br from-slate-800/60 to-slate-700/60 rounded-xl border border-slate-700/50 backdrop-blur-sm shadow-xl animate-in slide-in-from-top-2 duration-300">
+            <div className="mt-4 p-4 card-glass rounded-lg border border-border-light shadow-xl animate-in slide-in-from-top-2 duration-300">
               <nav className="space-y-2">
                 {docs.map(doc => (
                   <a
                     key={doc.filename}
                     href={`#${doc.title.replace(/\s+/g, '-')}`}
                     onClick={() => setShowTableOfContents(false)}
-                    className="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700/60 hover:text-slate-200 transition-all duration-300 hover:scale-105"
+                    className="block px-3 py-2 rounded-lg text-foreground-secondary hover:bg-secondary hover:text-foreground transition-all duration-300 hover:scale-105"
                   >
                     {doc.title}
                   </a>
@@ -240,28 +244,28 @@ export default function DocsClient({ docs }) {
           )}
         </div>
 
-        {/* Desktop header */}
+        {/* Desktop header with Premium Styling */}
         <div className="hidden lg:flex items-center justify-between mb-8">
           <div className="flex items-center gap-6">
             <button
               onClick={() => window.history.back()}
-              className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/50 text-slate-300 hover:bg-slate-700/60 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl group"
+              className="p-3 rounded-lg card-glass border border-border-light text-foreground hover:bg-secondary hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl group"
             >
               <svg className="w-6 h-6 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3 animate-in slide-in-from-left duration-1000">
+              <h1 className="text-5xl font-bold gradient-text-neon mb-3 animate-in slide-in-from-left duration-1000">
                 Documentation
               </h1>
-              <p className="text-slate-400 text-lg animate-in slide-in-from-left duration-1000 delay-200">
-                Comprehensive guide to C++ Compiler features and SQL tools
+              <p className="text-foreground-secondary text-lg animate-in slide-in-from-left duration-1000 delay-200">
+                Comprehensive guide to Online Compiler features, tools, and best practices
               </p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-sm text-slate-400 bg-slate-800/40 px-4 py-2 rounded-xl border border-slate-700/50 backdrop-blur-sm">
+            <div className="text-sm text-muted-foreground card-glass px-4 py-2 rounded-lg border border-border-light backdrop-blur-sm">
               {filteredDocs.length} of {docs.length} docs
             </div>
           </div>
@@ -269,8 +273,8 @@ export default function DocsClient({ docs }) {
 
         {/* Enhanced Breadcrumb navigation */}
         {search && (
-          <div className="mb-6 p-4 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-500/20 rounded-xl backdrop-blur-sm shadow-lg animate-in slide-in-from-top duration-500">
-            <div className="flex items-center gap-2 text-sm text-blue-300">
+          <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 via-accent/10 to-cyan/10 border border-primary/20 rounded-lg backdrop-blur-sm shadow-lg neon-glow animate-in slide-in-from-top duration-500">
+            <div className="flex items-center gap-2 text-sm text-primary">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -279,13 +283,13 @@ export default function DocsClient({ docs }) {
           </div>
         )}
 
-        {/* Enhanced Quick navigation pills */}
+        {/* Enhanced Quick navigation pills with Premium Styling */}
         <div className="mb-8 flex flex-wrap gap-3">
           {filteredDocs.map((doc, index) => (
             <a
               key={doc.filename}
               href={`#${doc.title.replace(/\s+/g, '-')}`}
-              className="group px-4 py-2 rounded-full bg-gradient-to-r from-slate-800/60 to-slate-700/60 border border-slate-600/50 text-slate-300 hover:from-blue-600/30 hover:to-purple-600/30 hover:text-slate-200 transition-all duration-500 text-sm font-medium hover:scale-110 hover:shadow-xl hover:shadow-blue-500/20 backdrop-blur-sm"
+              className="group px-4 py-2 rounded-full card-glass border border-border-light text-foreground-secondary hover:from-primary/30 hover:to-accent/30 hover:text-foreground transition-all duration-500 text-sm font-medium hover:scale-110 hover:shadow-xl hover:shadow-primary/20 backdrop-blur-sm"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <span className="transition-all duration-300 group-hover:translate-x-1">{doc.title}</span>
@@ -295,13 +299,13 @@ export default function DocsClient({ docs }) {
 
         {filteredDocs.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-slate-800/60 to-slate-700/60 rounded-full flex items-center justify-center shadow-xl animate-pulse">
-              <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-20 h-20 mx-auto mb-6 card-glass rounded-full flex items-center justify-center shadow-xl animate-pulse neon-glow">
+              <svg className="w-10 h-10 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-slate-300 mb-2">No documentation found</h3>
-            <p className="text-slate-400">Try adjusting your search terms or browse all documentation.</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2">No documentation found</h3>
+            <p className="text-foreground-secondary">Try adjusting your search terms or browse all documentation.</p>
           </div>
         )}
 
@@ -311,14 +315,14 @@ export default function DocsClient({ docs }) {
             <section 
               key={doc.filename} 
               id={doc.title.replace(/\s+/g, '-')}
-              className="group mb-12 bg-gradient-to-br from-slate-800/40 via-slate-700/30 to-slate-800/40 rounded-2xl p-8 border border-slate-600/50 shadow-2xl backdrop-blur-xl hover:shadow-3xl hover:shadow-blue-500/10 transition-all animate-in slide-in-from-bottom duration-1000"
+              className="group mb-12 card-glass rounded-xl p-8 border border-border-light shadow-2xl backdrop-blur-xl hover:shadow-3xl hover:shadow-primary/10 transition-all animate-in slide-in-from-bottom duration-1000"
               style={{ animationDelay: `${docIndex * 200}ms` }}
             >
               <div className="flex items-start justify-between mb-6">
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-500">
+                <h2 className="text-3xl font-bold gradient-text-neon group-hover:scale-105 transition-transform duration-500">
                   {doc.title}
                 </h2>
-                <div className="flex items-center gap-2 text-sm text-slate-400 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-slate-800/40 px-3 py-1 rounded-full border border-slate-600/50">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground opacity-0 group-hover:opacity-100 transition-all duration-500 card-glass px-3 py-1 rounded-full border border-border-light">
                   <span>•</span>
                   <span>{headings.length} sections</span>
                 </div>
@@ -326,9 +330,9 @@ export default function DocsClient({ docs }) {
 
               {/* Enhanced Table of contents for this section */}
               {headings.length > 0 && (
-                <div className="mb-6 p-4 bg-gradient-to-br from-slate-800/30 to-slate-700/30 rounded-xl border border-slate-600/30 backdrop-blur-sm shadow-lg group-hover:shadow-xl transition-all duration-500">
-                  <h4 className="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="mb-6 p-4 card-glass rounded-lg border border-border-light backdrop-blur-sm shadow-lg group-hover:shadow-xl transition-all duration-500">
+                  <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                     </svg>
                     Table of Contents
@@ -338,14 +342,14 @@ export default function DocsClient({ docs }) {
                       <a
                         key={index}
                         href={`#${heading.id}`}
-                        className="group/toc px-3 py-1 rounded-lg bg-slate-700/40 text-slate-300 hover:bg-gradient-to-r hover:from-blue-600/30 hover:to-purple-600/30 hover:text-slate-200 transition-all duration-300 text-sm hover:scale-105"
+                        className="group/toc px-3 py-1 rounded-lg bg-secondary text-foreground-secondary hover:bg-gradient-to-r hover:from-primary/30 hover:to-accent/30 hover:text-foreground transition-all duration-300 text-sm hover:scale-105"
                         style={{ marginLeft: `${(heading.level - 1) * 12}px` }}
                       >
                         <span className="transition-all duration-300 group-hover/toc:translate-x-1">{heading.text}</span>
                       </a>
                     ))}
                     {headings.length > 6 && (
-                      <span className="px-3 py-1 text-slate-400 text-sm">
+                      <span className="px-3 py-1 text-muted-foreground text-sm">
                         +{headings.length - 6} more
                       </span>
                     )}
@@ -353,29 +357,29 @@ export default function DocsClient({ docs }) {
                 </div>
               )}
 
-              <div className="prose prose-invert max-w-none text-slate-200 prose-headings:text-slate-100 prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-p:text-slate-300 prose-strong:text-slate-100 prose-code:text-blue-300 prose-pre:bg-slate-900/50 prose-pre:border prose-pre:border-slate-700/50">
+              <div className="prose prose-invert max-w-none text-foreground prose-headings:text-foreground prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-p:text-foreground-secondary prose-strong:text-foreground prose-code:text-primary prose-pre:bg-background-secondary prose-pre:border prose-pre:border-border">
                 <ReactMarkdown 
                   rehypePlugins={[rehypeHighlight]}
                   components={{
-                    // Custom components for better styling
-                    h1: ({children}) => <h1 className="text-2xl font-bold mb-4 mt-8 first:mt-0 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">{children}</h1>,
-                    h2: ({children}) => <h2 className="text-xl font-semibold mb-3 mt-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{children}</h2>,
-                    h3: ({children}) => <h3 className="text-lg font-medium text-slate-100 mb-2 mt-4">{children}</h3>,
-                    p: ({children}) => <p className="text-slate-300 mb-4 leading-relaxed">{children}</p>,
+                    // Custom components for better styling with premium theme
+                    h1: ({children}) => <h1 className="text-2xl font-bold mb-4 mt-8 first:mt-0 gradient-text-neon">{children}</h1>,
+                    h2: ({children}) => <h2 className="text-xl font-semibold mb-3 mt-6 gradient-text">{children}</h2>,
+                    h3: ({children}) => <h3 className="text-lg font-medium text-foreground mb-2 mt-4">{children}</h3>,
+                    p: ({children}) => <p className="text-foreground-secondary mb-4 leading-relaxed">{children}</p>,
                     code: ({children, className}) => {
                       if (className) {
-                        return <code className={`${className} bg-slate-900/60 px-2 py-1 rounded text-blue-300 text-sm border border-slate-600/50 shadow-sm`}>{children}</code>;
+                        return <code className={`${className} bg-background-secondary px-2 py-1 rounded text-primary text-sm border border-border shadow-sm`}>{children}</code>;
                       }
-                      return <code className="bg-slate-900/60 px-2 py-1 rounded text-blue-300 text-sm border border-slate-600/50 shadow-sm">{children}</code>;
+                      return <code className="bg-background-secondary px-2 py-1 rounded text-primary text-sm border border-border shadow-sm">{children}</code>;
                     },
-                    pre: ({children}) => <pre className="bg-gradient-to-br from-slate-900/60 to-slate-800/60 border border-slate-600/50 rounded-xl p-4 overflow-x-auto mb-4 shadow-lg backdrop-blur-sm">{children}</pre>,
-                    ul: ({children}) => <ul className="list-disc list-inside space-y-2 mb-4 text-slate-300">{children}</ul>,
-                    ol: ({children}) => <ol className="list-decimal list-inside space-y-2 mb-4 text-slate-300">{children}</ol>,
-                    li: ({children}) => <li className="text-slate-300">{children}</li>,
-                    blockquote: ({children}) => <blockquote className="border-l-4 border-gradient-to-b from-blue-500 to-purple-500 pl-4 italic text-slate-400 mb-4 bg-slate-800/30 rounded-r-lg py-2">{children}</blockquote>,
-                    table: ({children}) => <div className="overflow-x-auto mb-4"><table className="min-w-full border-collapse border border-slate-600/50 rounded-lg overflow-hidden shadow-lg">{children}</table></div>,
-                    th: ({children}) => <th className="border border-slate-600/50 px-4 py-2 bg-gradient-to-r from-slate-800/60 to-slate-700/60 text-slate-200 font-semibold">{children}</th>,
-                    td: ({children}) => <td className="border border-slate-600/50 px-4 py-2 text-slate-300 bg-slate-800/20">{children}</td>,
+                    pre: ({children}) => <pre className="card-glass border border-border-light rounded-lg p-4 overflow-x-auto mb-4 shadow-lg backdrop-blur-sm">{children}</pre>,
+                    ul: ({children}) => <ul className="list-disc list-inside space-y-2 mb-4 text-foreground-secondary">{children}</ul>,
+                    ol: ({children}) => <ol className="list-decimal list-inside space-y-2 mb-4 text-foreground-secondary">{children}</ol>,
+                    li: ({children}) => <li className="text-foreground-secondary">{children}</li>,
+                    blockquote: ({children}) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4 bg-secondary/30 rounded-r-lg py-2">{children}</blockquote>,
+                    table: ({children}) => <div className="overflow-x-auto mb-4"><table className="min-w-full border-collapse border border-border rounded-lg overflow-hidden shadow-lg">{children}</table></div>,
+                    th: ({children}) => <th className="border border-border px-4 py-2 bg-secondary text-foreground font-semibold">{children}</th>,
+                    td: ({children}) => <td className="border border-border px-4 py-2 text-foreground-secondary bg-background-secondary">{children}</td>,
                   }}
                 >
                   {doc.content}
@@ -385,23 +389,23 @@ export default function DocsClient({ docs }) {
           );
         })}
 
-        {/* Enhanced footer */}
-        <div className="text-center py-12 border-t border-slate-700/50">
-          <div className="flex items-center justify-center gap-6 mb-4">
-            <div className="flex items-center gap-2 text-slate-400 bg-slate-800/40 px-4 py-2 rounded-xl border border-slate-600/50 backdrop-blur-sm">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        {/* Enhanced footer with Premium Styling */}
+        <div className="text-center py-12 border-t border-border-light">
+          <div className="flex items-center justify-center gap-6 mb-4 flex-wrap">
+            <div className="flex items-center gap-2 text-muted-foreground card-glass px-4 py-2 rounded-lg border border-border-light backdrop-blur-sm">
+              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Last updated: {currentDate}
             </div>
-            <div className="flex items-center gap-2 text-slate-400 bg-slate-800/40 px-4 py-2 rounded-xl border border-slate-600/50 backdrop-blur-sm">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center gap-2 text-muted-foreground card-glass px-4 py-2 rounded-lg border border-border-light backdrop-blur-sm">
+              <svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Powered by Next.js & React Markdown
             </div>
           </div>
-          <p className="text-sm text-slate-500 bg-slate-800/30 px-4 py-2 rounded-full border border-slate-600/30 backdrop-blur-sm inline-block">
+          <p className="text-sm text-muted-foreground card-glass px-4 py-2 rounded-full border border-border-light backdrop-blur-sm inline-block">
             Built with ❤️ for developers
           </p>
         </div>

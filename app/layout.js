@@ -13,7 +13,7 @@ const inter = Inter({
 export const metadata = {
   ...genMeta({
     title: "Premium Web IDE | Run Code Online",
-    description: "Write, compile, and run C++, Python, Java, JavaScript, Go, Rust, and C code instantly in your browser. Premium web-based IDE with Monaco editor, syntax highlighting, and real-time execution.",
+    description: "Write, compile, run C++, Python, Java, JavaScript, Go, Rust, C code instantly in your browser. Premium web IDE with Monaco editor & syntax highlighting",
   }),
   // Additional metadata
   viewport: {
@@ -21,7 +21,7 @@ export const metadata = {
     initialScale: 1,
     maximumScale: 5,
   },
-  themeColor: "#0a0a0a",
+  themeColor: "#142850",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
       </head>
       <body cz-shortcut-listen="true"
         className={`${inter.variable} antialiased`}
-        style={{ backgroundColor: '#0a0a0a', color: '#e5e5e5' }}
+        style={{ backgroundColor: '#142850', color: '#e5e5e5' }}
       >
         <Providers>
           <Header />

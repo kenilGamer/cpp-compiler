@@ -2,41 +2,41 @@
 
 :root,
 [data-theme="dark"] {
-  /* Dark Theme - Enhanced Neon Blue/Purple Palette */
-  --background: #0a0a0a;
-  --background-secondary: #111111;
-  --background-tertiary: #1a1a1a;
+  /* Dark Theme - New Color Palette */
+  --background: #142850;
+  --background-secondary: #142850;
+  --background-tertiary: #27496D;
   --foreground: #e5e5e5;
   --foreground-secondary: #a0a0a0;
   
-  /* Primary Colors - Vibrant Blue to Purple Gradient */
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
+  /* Primary Colors - #00A8CC */
+  --primary: #00A8CC;
+  --primary-hover: #00c4f0;
   --primary-foreground: #ffffff;
-  --primary-glow: rgba(59, 130, 246, 0.5);
+  --primary-glow: rgba(0, 168, 204, 0.5);
   
-  /* Accent Colors - Purple/Cyan */
-  --accent: #8b5cf6;
-  --accent-hover: #7c3aed;
+  /* Accent Colors - #0C7B93 */
+  --accent: #0C7B93;
+  --accent-hover: #0e9ab8;
   --accent-foreground: #ffffff;
-  --accent-glow: rgba(139, 92, 246, 0.5);
-  --cyan: #06b6d4;
-  --cyan-glow: rgba(6, 182, 212, 0.4);
+  --accent-glow: rgba(12, 123, 147, 0.5);
+  --cyan: #00A8CC;
+  --cyan-glow: rgba(0, 168, 204, 0.4);
   
-  /* Secondary Colors - Darker, richer tones */
-  --secondary: #1e1e1e;
+  /* Secondary Colors - #27496D */
+  --secondary: #27496D;
   --secondary-foreground: #f9fafb;
-  --muted: #2d2d2d;
+  --muted: #1e3a5c;
   --muted-foreground: #888888;
-  --border: #2d2d2d;
-  --border-light: rgba(255, 255, 255, 0.08);
-  --input: #1a1a1a;
-  --ring: #3b82f6;
+  --border: #27496D;
+  --border-light: rgba(39, 73, 109, 0.5);
+  --input: #1e3a5c;
+  --ring: #00A8CC;
   
-  /* Neon Effects - Enhanced */
-  --neon-blue: #00d4ff;
-  --neon-purple: #a855f7;
-  --neon-glow: 0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(139, 92, 246, 0.4);
+  /* Neon Effects - Using new colors */
+  --neon-blue: #00A8CC;
+  --neon-purple: #0C7B93;
+  --neon-glow: 0 0 20px rgba(0, 168, 204, 0.6), 0 0 40px rgba(12, 123, 147, 0.4);
   
   /* Spacing & Layout */
   --radius: 0.75rem;
@@ -53,11 +53,11 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
-  --shadow-neon: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.3);
+  --shadow-neon: 0 0 20px rgba(0, 168, 204, 0.4), 0 0 40px rgba(12, 123, 147, 0.3);
   
   /* Glassmorphism - Dark theme optimized */
-  --glass-bg: rgba(20, 20, 20, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(20, 40, 80, 0.8);
+  --glass-border: rgba(39, 73, 109, 0.5);
   --glass-blur: blur(16px);
 }
 
@@ -122,7 +122,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Ensure dark background by default */
-  background-color: #0a0a0a;
+  background-color: #142850;
 }
 
 /* Custom scrollbar */
@@ -194,14 +194,14 @@ body {
 }
 
 .glass-strong {
-  background: rgba(31, 41, 55, 0.85);
+  background: rgba(20, 40, 80, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
 }
 
 .glass-subtle {
-  background: rgba(31, 41, 55, 0.5);
+  background: rgba(20, 40, 80, 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--glass-border);
@@ -220,7 +220,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+  filter: drop-shadow(0 0 8px rgba(0, 168, 204, 0.5));
 }
 
 .neon-glow {
@@ -229,7 +229,7 @@ body {
 }
 
 .neon-glow:hover {
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.6), 0 0 60px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 0 30px rgba(0, 168, 204, 0.6), 0 0 60px rgba(12, 123, 147, 0.4);
 }
 
 .neon-border {
@@ -244,6 +244,53 @@ body {
 
 .monaco-editor .overflow-guard {
   border-radius: var(--radius) !important;
+}
+
+/* Force selection colors to use new palette - override Monaco defaults */
+.monaco-editor .view-overlays .selected-text {
+  background-color: rgba(0, 168, 204, 0.5) !important;
+  color: inherit !important;
+}
+
+.monaco-editor .view-overlays .current-line {
+  background-color: #27496D !important;
+}
+
+.monaco-editor .cursors-layer .cursor {
+  background-color: #00A8CC !important;
+  border-color: #00A8CC !important;
+}
+
+.monaco-editor .selected-text {
+  background-color: rgba(0, 168, 204, 0.5) !important;
+}
+
+.monaco-editor .monaco-editor-background {
+  background-color: #142850 !important;
+}
+
+/* Override any red/error selection colors - more specific selectors */
+.monaco-editor .view-overlays .selected-text[style*="background"],
+.monaco-editor .view-overlays .selected-text[style*="rgb"],
+.monaco-editor .view-overlays .selected-text[style*="red"] {
+  background-color: rgba(0, 168, 204, 0.5) !important;
+}
+
+.monaco-editor .view-zones .view-line {
+  background-color: transparent !important;
+}
+
+/* Override selection background in all possible selectors */
+.monaco-editor .view-lines .view-line span[style*="background"] {
+  background-color: rgba(0, 168, 204, 0.5) !important;
+}
+
+/* Target Monaco's internal selection classes */
+.monaco-editor .monaco-editor .view-overlays .selected-text,
+.monaco-editor .view-overlays .selected-text,
+.monaco-editor .selected-text {
+  background: rgba(0, 168, 204, 0.5) !important;
+  background-color: rgba(0, 168, 204, 0.5) !important;
 }
 
 /* Premium Button Styles */
@@ -400,7 +447,7 @@ body {
 }
 /* Header Styles */
 .header-scrolled {
-  background-color: rgba(10, 10, 10, 0.85);
+  background-color: rgba(20, 40, 80, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-light);
@@ -459,9 +506,9 @@ body {
 .holographic {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.1) 0%,
-    rgba(139, 92, 246, 0.1) 50%,
-    rgba(6, 182, 212, 0.1) 100%
+    rgba(0, 168, 204, 0.1) 0%,
+    rgba(12, 123, 147, 0.1) 50%,
+    rgba(39, 73, 109, 0.1) 100%
   );
   background-size: 200% 200%;
   animation: holographic-shift 5s ease infinite;

@@ -31,8 +31,8 @@ export default function ExecutionStats({
       label: "Runtime",
       value: formatExecutionTime(executionTime),
       icon: ClockIcon,
-      color: "text-blue-400",
-      glow: "shadow-[0_0_15px_rgba(59,130,246,0.3)]",
+      color: "text-primary",
+      glow: "shadow-[0_0_15px_rgba(0,168,204,0.3)]",
     },
     {
       label: "Memory",
@@ -45,8 +45,8 @@ export default function ExecutionStats({
       label: "CPU",
       value: formatCPUUsage(cpuUsage),
       icon: CpuChipIcon,
-      color: "text-purple-400",
-      glow: "shadow-[0_0_15px_rgba(139,92,246,0.3)]",
+      color: "text-accent",
+      glow: "shadow-[0_0_15px_rgba(12,123,147,0.3)]",
     },
   ];
 

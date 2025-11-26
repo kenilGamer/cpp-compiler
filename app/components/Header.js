@@ -51,7 +51,7 @@ export default function Header() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-[#00A8CC] to-[#0C7B93] rounded-lg shadow-lg neon-glow">
                 <CodeBracketIcon className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -71,7 +71,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-[#00A8CC] to-[#0C7B93] rounded-lg shadow-lg neon-glow">
               <CodeBracketIcon className="w-6 h-6 text-white" />
             </div>
             <div>

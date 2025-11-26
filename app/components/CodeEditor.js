@@ -91,26 +91,36 @@ export default function CodeEditor({
         { token: 'variable', foreground: '9CDCFE' },
       ],
       colors: {
-        'editor.background': '#0a0a0a',
+        'editor.background': '#142850',
         'editor.foreground': '#e5e5e5',
-        'editor.lineHighlightBackground': '#1a1a1a',
-        'editor.selectionBackground': '#264f78',
-        'editor.inactiveSelectionBackground': '#2d2d2d',
-        'editorCursor.foreground': '#3b82f6',
-        'editorCursor.background': '#0a0a0a',
-        'editorWhitespace.foreground': '#2d2d2d',
-        'editorIndentGuide.background': '#2d2d2d',
-        'editorIndentGuide.activeBackground': '#4a4a4a',
-        'editor.lineNumber.foreground': '#666666',
+        'editor.lineHighlightBackground': '#27496D',
+        'editor.selectionBackground': 'rgba(0, 168, 204, 0.5)',
+        'editor.selectionHighlightBackground': 'rgba(0, 168, 204, 0.3)',
+        'editor.inactiveSelectionBackground': 'rgba(0, 168, 204, 0.2)',
+        'editor.selectionHighlightBorder': 'rgba(0, 168, 204, 0.8)',
+        'editor.wordHighlightBackground': 'rgba(0, 168, 204, 0.25)',
+        'editor.wordHighlightStrongBackground': 'rgba(12, 123, 147, 0.35)',
+        'editor.findMatchBackground': 'rgba(0, 168, 204, 0.5)',
+        'editor.findMatchHighlightBackground': 'rgba(0, 168, 204, 0.3)',
+        'editor.findRangeHighlightBackground': 'rgba(12, 123, 147, 0.3)',
+        'editor.rangeHighlightBackground': 'rgba(0, 168, 204, 0.25)',
+        'editorCursor.foreground': '#00A8CC',
+        'editorCursor.background': '#142850',
+        'editorWhitespace.foreground': '#1e3a5c',
+        'editorIndentGuide.background': '#1e3a5c',
+        'editorIndentGuide.activeBackground': '#27496D',
+        'editor.lineNumber.foreground': '#5a7a9a',
         'editor.lineNumber.activeForeground': '#c6c6c6',
-        'editorGutter.background': '#0a0a0a',
-        'editorWidget.background': '#1e1e1e',
-        'editorWidget.border': '#2d2d2d',
-        'editorSuggestWidget.background': '#1e1e1e',
-        'editorSuggestWidget.border': '#2d2d2d',
-        'editorSuggestWidget.selectedBackground': '#2d2d2d',
-        'editorMinimap.background': '#0a0a0a',
-        'editorMinimap.selectionHighlight': '#3b82f6',
+        'editorGutter.background': '#142850',
+        'editorWidget.background': '#27496D',
+        'editorWidget.border': '#0C7B93',
+        'editorSuggestWidget.background': '#27496D',
+        'editorSuggestWidget.border': '#0C7B93',
+        'editorSuggestWidget.selectedBackground': '#1e3a5c',
+        'editorMinimap.background': '#142850',
+        'editorMinimap.selectionHighlight': '#00A8CC',
+        'editorBracketMatch.background': 'rgba(0, 168, 204, 0.2)',
+        'editorBracketMatch.border': '#00A8CC',
       }
     });
 
@@ -131,8 +141,8 @@ export default function CodeEditor({
         'editor.background': '#ffffff',
         'editor.foreground': '#000000',
         'editor.lineHighlightBackground': '#f0f0f0',
-        'editor.selectionBackground': '#add6ff',
-        'editorCursor.foreground': '#3b82f6',
+        'editor.selectionBackground': 'rgba(0, 168, 204, 0.2)',
+        'editorCursor.foreground': '#00A8CC',
       }
     });
   };
@@ -197,7 +207,15 @@ export default function CodeEditor({
     
     // Ensure theme is applied (defined in beforeMount)
     try {
+      // Force reapply theme to ensure all colors are updated
       monaco.editor.setTheme('premium-dark');
+      
+      // Force update selection colors by reapplying theme
+      setTimeout(() => {
+        monaco.editor.setTheme('premium-dark');
+        // Force editor to update its rendering
+        editor.updateOptions({});
+      }, 100);
     } catch (error) {
       console.warn('Failed to set premium-dark theme, using vs-dark:', error);
       monaco.editor.setTheme('vs-dark');
@@ -324,7 +342,7 @@ export default function CodeEditor({
         <div className="flex gap-2">
           <button
             onClick={copyToClipboard}
-            className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            className="p-2 text-foreground-secondary hover:text-foreground hover:bg-secondary rounded-lg transition-colors focus-ring"
             title="Copy code"
             aria-label="Copy code"
           >
@@ -332,7 +350,7 @@ export default function CodeEditor({
           </button>
           <button
             onClick={runCode}
-            className="p-2 text-gray-400 hover:text-green-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            className="p-2 text-foreground-secondary hover:text-green-400 hover:bg-secondary rounded-lg transition-colors focus-ring"
             title="Run code"
             aria-label="Run code"
           >
@@ -340,7 +358,7 @@ export default function CodeEditor({
           </button>
           <button
             onClick={clearCode}
-            className="p-2 text-gray-400 hover:text-red-400 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            className="p-2 text-foreground-secondary hover:text-red-400 hover:bg-secondary rounded-lg transition-colors focus-ring"
             title="Clear code"
             aria-label="Clear code"
           >
@@ -446,19 +464,19 @@ export default function CodeEditor({
       <div className="flex items-center justify-between px-4 py-2 bg-background-tertiary border-t border-border text-xs text-muted-foreground">
         <span>💡 Type 2+ characters for suggestions</span>
         <div className="flex items-center gap-2">
-          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Ctrl</kbd>
+          <kbd className="px-2 py-1 bg-secondary rounded text-foreground">Ctrl</kbd>
           <span>+</span>
-          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">S</kbd>
+          <kbd className="px-2 py-1 bg-secondary rounded text-foreground">S</kbd>
           <span>Save</span>
           <span className="mx-2">|</span>
-          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Ctrl</kbd>
+          <kbd className="px-2 py-1 bg-secondary rounded text-foreground">Ctrl</kbd>
           <span>+</span>
-          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">O</kbd>
+          <kbd className="px-2 py-1 bg-secondary rounded text-foreground">O</kbd>
           <span>Load</span>
           <span className="mx-2">|</span>
-          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Ctrl</kbd>
+          <kbd className="px-2 py-1 bg-secondary rounded text-foreground">Ctrl</kbd>
           <span>+</span>
-          <kbd className="px-2 py-1 bg-gray-700 rounded text-gray-300">Enter</kbd>
+          <kbd className="px-2 py-1 bg-secondary rounded text-foreground">Enter</kbd>
           <span>Run</span>
         </div>
       </div>

@@ -3,13 +3,13 @@
  */
 
 export const siteConfig = {
-  name: "Online Code Compiler",
-  title: "Online Code Compiler - Premium Web IDE | Run Code Online",
-  description: "Write, compile, and run C++, Python, Java, JavaScript, Go, Rust, and C code instantly in your browser. Premium web-based IDE with Monaco editor, syntax highlighting, and real-time execution.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://your-domain.com",
+  name: "Online Compiler",
+  title: "Online Compiler v2.0 - Premium Web IDE | Run Code Online",
+  description: "Write, compile, run C++, Python, Java, JavaScript, Go, Rust, C code instantly in your browser. Premium web IDE with Monaco editor & syntax highlighting",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://compiler.godcarft.fun",
   ogImage: "/og-image.png",
-  twitterHandle: "@yourhandle",
-  author: "Your Name",
+  twitterHandle: "@kenilgamer",
+  author: "Kenil",
   keywords: [
     "online compiler",
     "web IDE",
@@ -116,11 +116,13 @@ export function generateStructuredData({ type = "WebApplication", path = "" }) {
     featureList: [
       "Multi-language support (C++, Python, Java, JavaScript, Go, Rust, C, C#)",
       "Monaco code editor with syntax highlighting",
-      "Real-time code execution",
+      "Real-time code compilation and execution",
       "Code templates and snippets",
-      "Execution statistics",
+      "Execution statistics (Runtime, Memory, CPU)",
       "Dark/Light theme",
       "Responsive design",
+      "Secure sandboxed environment",
+      "Cloud-based - no installation required",
     ],
   };
 
