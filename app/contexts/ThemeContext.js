@@ -14,9 +14,13 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     setMounted(true);
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    // Default to dark theme, check localStorage or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'dark'); // Always default to dark
+    setTheme(initialTheme);
+    document.documentElement.setAttribute('data-theme', initialTheme);
+    document.documentElement.style.colorScheme = initialTheme;
   }, []);
 
   const toggleTheme = () => {
@@ -25,6 +29,7 @@ export function ThemeProvider({ children }) {
     if (typeof window !== 'undefined') {
       localStorage.setItem('theme', newTheme);
       document.documentElement.setAttribute('data-theme', newTheme);
+      document.documentElement.style.colorScheme = newTheme;
     }
   };
 
@@ -33,6 +38,7 @@ export function ThemeProvider({ children }) {
     if (typeof window !== 'undefined') {
       localStorage.setItem('theme', newTheme);
       document.documentElement.setAttribute('data-theme', newTheme);
+      document.documentElement.style.colorScheme = newTheme;
     }
   };
 

@@ -1,41 +1,42 @@
 @import "tailwindcss";
 
-:root {
-  /* Dark Theme - Neon Blue/Purple Palette */
+:root,
+[data-theme="dark"] {
+  /* Dark Theme - Enhanced Neon Blue/Purple Palette */
   --background: #0a0a0a;
   --background-secondary: #111111;
   --background-tertiary: #1a1a1a;
-  --foreground: #ededed;
-  --foreground-secondary: #b4b4b4;
+  --foreground: #e5e5e5;
+  --foreground-secondary: #a0a0a0;
   
-  /* Primary Colors - Blue to Purple Gradient */
+  /* Primary Colors - Vibrant Blue to Purple Gradient */
   --primary: #3b82f6;
   --primary-hover: #2563eb;
   --primary-foreground: #ffffff;
-  --primary-glow: rgba(59, 130, 246, 0.4);
+  --primary-glow: rgba(59, 130, 246, 0.5);
   
   /* Accent Colors - Purple/Cyan */
   --accent: #8b5cf6;
   --accent-hover: #7c3aed;
   --accent-foreground: #ffffff;
-  --accent-glow: rgba(139, 92, 246, 0.4);
+  --accent-glow: rgba(139, 92, 246, 0.5);
   --cyan: #06b6d4;
-  --cyan-glow: rgba(6, 182, 212, 0.3);
+  --cyan-glow: rgba(6, 182, 212, 0.4);
   
-  /* Secondary Colors */
-  --secondary: #1f2937;
+  /* Secondary Colors - Darker, richer tones */
+  --secondary: #1e1e1e;
   --secondary-foreground: #f9fafb;
-  --muted: #374151;
-  --muted-foreground: #9ca3af;
-  --border: #374151;
-  --border-light: rgba(255, 255, 255, 0.1);
-  --input: #1f2937;
+  --muted: #2d2d2d;
+  --muted-foreground: #888888;
+  --border: #2d2d2d;
+  --border-light: rgba(255, 255, 255, 0.08);
+  --input: #1a1a1a;
   --ring: #3b82f6;
   
-  /* Neon Effects */
+  /* Neon Effects - Enhanced */
   --neon-blue: #00d4ff;
   --neon-purple: #a855f7;
-  --neon-glow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3);
+  --neon-glow: 0 0 20px rgba(59, 130, 246, 0.6), 0 0 40px rgba(139, 92, 246, 0.4);
   
   /* Spacing & Layout */
   --radius: 0.75rem;
@@ -47,17 +48,17 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Roboto', 'Satoshi', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', monospace;
   
-  /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.4);
-  --shadow-neon: 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.2);
+  /* Shadows - Enhanced for dark theme */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+  --shadow-neon: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.3);
   
-  /* Glassmorphism */
-  --glass-bg: rgba(31, 41, 55, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-blur: blur(12px);
+  /* Glassmorphism - Dark theme optimized */
+  --glass-bg: rgba(20, 20, 20, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(16px);
 }
 
 /* Light Theme */
@@ -100,6 +101,17 @@
 
 html {
   scroll-behavior: smooth;
+  /* Default to dark theme */
+  color-scheme: dark;
+}
+
+html[data-theme="dark"],
+html:not([data-theme]) {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
 }
 
 body {
@@ -109,6 +121,8 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Ensure dark background by default */
+  background-color: #0a0a0a;
 }
 
 /* Custom scrollbar */

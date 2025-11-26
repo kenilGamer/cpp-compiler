@@ -75,64 +75,67 @@ export default function CodeEditor({
   const monacoLang = languageMap[language] || "plaintext";
   const { theme } = useTheme();
 
-  // Define custom Monaco theme
-  useEffect(() => {
-    if (window.monaco) {
-      window.monaco.editor.defineTheme('premium-dark', {
-        base: 'vs-dark',
-        inherit: true,
-        rules: [
-          { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
-          { token: 'keyword', foreground: '569CD6', fontStyle: 'bold' },
-          { token: 'string', foreground: 'CE9178' },
-          { token: 'number', foreground: 'B5CEA8' },
-          { token: 'type', foreground: '4EC9B0' },
-          { token: 'function', foreground: 'DCDCAA' },
-          { token: 'variable', foreground: '9CDCFE' },
-        ],
-        colors: {
-          'editor.background': '#0a0a0a',
-          'editor.foreground': '#ededed',
-          'editor.lineHighlightBackground': '#1a1a1a',
-          'editor.selectionBackground': '#264f78',
-          'editor.inactiveSelectionBackground': '#3a3d41',
-          'editorCursor.foreground': '#3b82f6',
-          'editorWhitespace.foreground': '#3a3d41',
-          'editorIndentGuide.background': '#3a3d41',
-          'editorIndentGuide.activeBackground': '#707070',
-          'editor.lineNumber.foreground': '#858585',
-          'editor.lineNumber.activeForeground': '#c6c6c6',
-          'editorGutter.background': '#0a0a0a',
-          'editorWidget.background': '#252526',
-          'editorWidget.border': '#454545',
-          'editorSuggestWidget.background': '#252526',
-          'editorSuggestWidget.border': '#454545',
-          'editorSuggestWidget.selectedBackground': '#2a2d2e',
-        }
-      });
+  // Define custom Monaco theme - use beforeMount to ensure it's ready
+  const handleEditorWillMount = (monaco) => {
+    // Define premium-dark theme
+    monaco.editor.defineTheme('premium-dark', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
+        { token: 'keyword', foreground: '569CD6', fontStyle: 'bold' },
+        { token: 'string', foreground: 'CE9178' },
+        { token: 'number', foreground: 'B5CEA8' },
+        { token: 'type', foreground: '4EC9B0' },
+        { token: 'function', foreground: 'DCDCAA' },
+        { token: 'variable', foreground: '9CDCFE' },
+      ],
+      colors: {
+        'editor.background': '#0a0a0a',
+        'editor.foreground': '#e5e5e5',
+        'editor.lineHighlightBackground': '#1a1a1a',
+        'editor.selectionBackground': '#264f78',
+        'editor.inactiveSelectionBackground': '#2d2d2d',
+        'editorCursor.foreground': '#3b82f6',
+        'editorCursor.background': '#0a0a0a',
+        'editorWhitespace.foreground': '#2d2d2d',
+        'editorIndentGuide.background': '#2d2d2d',
+        'editorIndentGuide.activeBackground': '#4a4a4a',
+        'editor.lineNumber.foreground': '#666666',
+        'editor.lineNumber.activeForeground': '#c6c6c6',
+        'editorGutter.background': '#0a0a0a',
+        'editorWidget.background': '#1e1e1e',
+        'editorWidget.border': '#2d2d2d',
+        'editorSuggestWidget.background': '#1e1e1e',
+        'editorSuggestWidget.border': '#2d2d2d',
+        'editorSuggestWidget.selectedBackground': '#2d2d2d',
+        'editorMinimap.background': '#0a0a0a',
+        'editorMinimap.selectionHighlight': '#3b82f6',
+      }
+    });
 
-      window.monaco.editor.defineTheme('premium-light', {
-        base: 'vs',
-        inherit: true,
-        rules: [
-          { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
-          { token: 'keyword', foreground: '0000FF', fontStyle: 'bold' },
-          { token: 'string', foreground: 'A31515' },
-          { token: 'number', foreground: '098658' },
-          { token: 'type', foreground: '267F99' },
-          { token: 'function', foreground: '795E26' },
-          { token: 'variable', foreground: '001080' },
-        ],
-        colors: {
-          'editor.background': '#ffffff',
-          'editor.foreground': '#000000',
-          'editor.lineHighlightBackground': '#f0f0f0',
-          'editor.selectionBackground': '#add6ff',
-          'editorCursor.foreground': '#3b82f6',
-        }
-      });
-    }
-  }, []);
+    // Define premium-light theme
+    monaco.editor.defineTheme('premium-light', {
+      base: 'vs',
+      inherit: true,
+      rules: [
+        { token: 'comment', foreground: '6A9955', fontStyle: 'italic' },
+        { token: 'keyword', foreground: '0000FF', fontStyle: 'bold' },
+        { token: 'string', foreground: 'A31515' },
+        { token: 'number', foreground: '098658' },
+        { token: 'type', foreground: '267F99' },
+        { token: 'function', foreground: '795E26' },
+        { token: 'variable', foreground: '001080' },
+      ],
+      colors: {
+        'editor.background': '#ffffff',
+        'editor.foreground': '#000000',
+        'editor.lineHighlightBackground': '#f0f0f0',
+        'editor.selectionBackground': '#add6ff',
+        'editorCursor.foreground': '#3b82f6',
+      }
+    });
+  };
 
   // Register Monaco completion provider
   useEffect(() => {
@@ -192,9 +195,13 @@ export default function CodeEditor({
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
     
-    // Apply custom theme
-    const themeName = theme === 'dark' ? 'premium-dark' : 'premium-light';
-    monaco.editor.setTheme(themeName);
+    // Ensure theme is applied (defined in beforeMount)
+    try {
+      monaco.editor.setTheme('premium-dark');
+    } catch (error) {
+      console.warn('Failed to set premium-dark theme, using vs-dark:', error);
+      monaco.editor.setTheme('vs-dark');
+    }
     
     editor.onDidChangeCursorPosition(() => {
       const model = editor.getModel();
@@ -366,8 +373,9 @@ export default function CodeEditor({
           height="100%"
           language={monacoLang}
           value={code}
-          theme={theme === 'dark' ? 'premium-dark' : 'premium-light'}
+          theme="premium-dark"
           onChange={handleEditorChange}
+          beforeMount={handleEditorWillMount}
           onMount={handleEditorDidMount}
           options={{
             fontSize: 14,

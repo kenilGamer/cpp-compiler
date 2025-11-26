@@ -37,7 +37,7 @@ const structuredData = generateStructuredData({ type: "WebApplication" });
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" style={{ colorScheme: 'dark' }}>
       <head>
         {/* Structured Data */}
         <script
@@ -47,6 +47,7 @@ export default function RootLayout({ children }) {
       </head>
       <body cz-shortcut-listen="true"
         className={`${inter.variable} antialiased`}
+        style={{ backgroundColor: '#0a0a0a', color: '#e5e5e5' }}
       >
         <Providers>
           <Header />
