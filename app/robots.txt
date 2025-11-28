@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://your-domain.com/sitemap.xml
+Sitemap: https://www.godcarft.fun/sitemap.xml
 
 # Disallow admin and API routes
 Disallow: /api/
