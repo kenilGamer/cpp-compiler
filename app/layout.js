@@ -22,7 +22,7 @@ const inter = Inter({
 export const metadata = {
   ...genMeta({
     title: "Premium Web IDE | Run Code Online",
-    description: "Write, compile, run C++, Python, Java, JavaScript, Go, Rust, C instantly. Premium web IDE with Monaco editor. Free online compiler with real-time execution.",
+    description: "Run C++, Python, Java, JavaScript, Go, Rust instantly. Free online compiler with Monaco editor.",
   }),
   // Additional metadata (viewport/themeColor moved to separate export)
   appleWebApp: {

@@ -65,7 +65,7 @@ export const siteConfig = {
   name: "Online Compiler",
   shortName: "Compiler",
   title: "Online Compiler v2.0 - Premium Web IDE | Run Code Online",
-  description: "Write, compile, run C++, Python, Java, JavaScript, Go, Rust, C instantly. Premium web IDE with Monaco editor. Free online compiler with real-time execution.",
+  description: "Run C++, Python, Java, JavaScript, Go, Rust instantly. Free online compiler with Monaco editor.",
   url: PREFERRED_DOMAIN,
   alternateDomains: ALTERNATE_DOMAINS,
   preferredDomain: PREFERRED_DOMAIN,
