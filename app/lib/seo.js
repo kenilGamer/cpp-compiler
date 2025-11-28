@@ -211,7 +211,6 @@ export function generateMetadata({
     publisher: siteConfig.author,
     applicationName: siteConfig.name,
     referrer: "origin-when-cross-origin",
-    colorScheme: "dark light",
     metadataBase: new URL(siteConfig.url),
     alternates: {
       canonical: fullUrl,

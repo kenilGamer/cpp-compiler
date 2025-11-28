@@ -24,16 +24,7 @@ export const metadata = {
     title: "Premium Web IDE | Run Code Online",
     description: "Write, compile, run C++, Python, Java, JavaScript, Go, Rust, C code instantly in your browser. Premium web IDE with Monaco editor & syntax highlighting. Free online code compiler with real-time execution.",
   }),
-  // Additional metadata
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#142850" },
-  ],
+  // Additional metadata (viewport/themeColor moved to separate export)
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -54,6 +45,18 @@ export const metadata = {
     email: false,
     url: false,
   },
+};
+
+// Separate viewport export (Next.js 16 requirement)
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#142850" },
+  ],
+  colorScheme: "dark light",
 };
 
 // Generate all homepage structured data
