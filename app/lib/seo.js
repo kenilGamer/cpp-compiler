@@ -261,12 +261,21 @@ export function generateMetadata({
       },
       nocache: false,
     },
-    verification: {
-      google: process.env.GOOGLE_VERIFICATION_CODE,
-      yandex: process.env.YANDEX_VERIFICATION_CODE,
-      yahoo: process.env.YAHOO_VERIFICATION_CODE,
-      bing: process.env.BING_VERIFICATION_CODE,
-    },
+    // Only include verification codes that are defined
+    ...(process.env.GOOGLE_VERIFICATION_CODE || 
+        process.env.YANDEX_VERIFICATION_CODE || 
+        process.env.YAHOO_VERIFICATION_CODE || 
+        process.env.BING_VERIFICATION_CODE
+      ? {
+          verification: {
+            ...(process.env.GOOGLE_VERIFICATION_CODE && { google: process.env.GOOGLE_VERIFICATION_CODE }),
+            ...(process.env.YANDEX_VERIFICATION_CODE && { yandex: process.env.YANDEX_VERIFICATION_CODE }),
+            ...(process.env.YAHOO_VERIFICATION_CODE && { yahoo: process.env.YAHOO_VERIFICATION_CODE }),
+            ...(process.env.BING_VERIFICATION_CODE && { bing: process.env.BING_VERIFICATION_CODE }),
+          },
+        }
+      : {}
+    ),
     category: siteConfig.category,
     classification: "Developer Tools",
     ...additionalMetadata,
