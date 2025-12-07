@@ -262,11 +262,10 @@ export function generateMetadata({
       nocache: false,
     },
     verification: {
-      // Add your verification codes here
-      // google: "your-google-verification-code",
-      // yandex: "your-yandex-verification-code",
-      // yahoo: "your-yahoo-verification-code",
-      // bing: "your-bing-verification-code",
+      google: process.env.GOOGLE_VERIFICATION_CODE,
+      yandex: process.env.YANDEX_VERIFICATION_CODE,
+      yahoo: process.env.YAHOO_VERIFICATION_CODE,
+      bing: process.env.BING_VERIFICATION_CODE,
     },
     category: siteConfig.category,
     classification: "Developer Tools",
